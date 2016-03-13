@@ -77,7 +77,7 @@ var SampleApp = function() {
     self.createRoutes = function() {
 
         self.app.get('/' , function(req,res) {
-          res.render('pages/index');
+            res.redirect("doom.pimblott.com");
         });
 
     };
