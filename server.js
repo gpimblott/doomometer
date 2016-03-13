@@ -1,8 +1,9 @@
 #!/bin/env node
 //  OpenShift sample Node application
-var express = require('express');
-var fs      = require('fs');
-
+var express         = require( 'express' );
+var cookieParser    = require( 'cookie-parser' );
+var session         = require( 'express-session' );
+var bodyParser      = require( 'body-parser' );
 
 /**
  *  Define the sample application.
@@ -33,25 +34,6 @@ var SampleApp = function() {
         };
     };
 
-
-    /**
-     *  Populate the cache.
-     */
-    self.populateCache = function() {
-        if (typeof self.zcache === "undefined") {
-            self.zcache = { 'index.html': '' };
-        }
-
-        //  Local cache for static content.
-        self.zcache['index.html'] = fs.readFileSync('./index.html');
-    };
-
-
-    /**
-     *  Retrieve entry (content) from cache.
-     *  @param {string} key  Key identifying content to retrieve from cache.
-     */
-    self.cache_get = function(key) { return self.zcache[key]; };
 
 
     /**
@@ -93,17 +75,11 @@ var SampleApp = function() {
      *  Create the routing table entries + handlers for the application.
      */
     self.createRoutes = function() {
-        self.routes = { };
 
-        self.routes['/asciimo'] = function(req, res) {
-            var link = "http://i.imgur.com/kmbjB.png";
-            res.send("<html><body><img src='" + link + "'></body></html>");
-        };
+        self.app.get('/' , function(req,res) {
+          res.render('pages/index');
+        });
 
-        self.routes['/'] = function(req, res) {
-            res.setHeader('Content-Type', 'text/html');
-            res.send(self.cache_get('index.html') );
-        };
     };
 
 
@@ -112,13 +88,24 @@ var SampleApp = function() {
      *  the handlers.
      */
     self.initializeServer = function() {
-        self.createRoutes();
-        self.app = express.createServer();
 
-        //  Add handlers for the app (from the routes).
-        for (var r in self.routes) {
-            self.app.get(r, self.routes[r]);
-        }
+        self.app = express();
+
+        self.app.set('view engine','ejs');
+
+        self.app.use( cookieParser());
+        self.app.use( bodyParser.json());
+        self.app.use( bodyParser.urlencoded({
+            extended: true
+        }));
+
+        self.app.use( session({secret: 'mysecretkeyforthiscookie'}));
+
+        self.createRoutes();
+
+        // Browser Cache
+        var oneDay = 86400000;
+        self.app.use('/', express.static( 'public' , { maxAge: oneDay }));
     };
 
 
@@ -127,7 +114,6 @@ var SampleApp = function() {
      */
     self.initialize = function() {
         self.setupVariables();
-        self.populateCache();
         self.setupTerminationHandlers();
 
         // Create the express server and routes.
