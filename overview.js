@@ -1,3 +1,4 @@
+var fs = require("fs");
 var dbpool = require('./config/dbpool');
 
 var OverviewStats = function () {};
@@ -118,7 +119,7 @@ OverviewStats.update = function () {
     });
 
     dbpool.getConnection(function (err, conn) {
-   
+
         conn.query('SELECT state FROM alertstates ORDER BY issuetime DESC limit 1', function (err, rows) {
                 if (!err) {
                     alertState = rows[0].state;
@@ -134,6 +135,53 @@ OverviewStats.update = function () {
     });
 
 
+    /**
+     * Create the list of earthquakes for the front page
+     */
+    dbpool.getConnection(function (err, conn) {
+
+        conn.query('SELECT * from earthquakes_today_view', function (err, rows) {
+                if (!err) {
+
+                    var path = "views/pages/earthquake_data.txt";
+                    var fileStream = fs.createWriteStream(path);
+
+                     rows.forEach( function (item, index) {
+
+
+                        var row = "features[" + index + "] = poi(";
+                        row += item.id + ",\"";
+
+                        var size = "small";
+                        if(item.magnitude<2.0) {
+                            size="small";
+                        } else if(item.magnitude<3.0) {
+                            size="medium";
+                        } else if(item.magnitude>3.0) {
+                            size="large";
+                        }
+
+                        row += size + "\",";
+                        row += "\"" + item.url + "\",";
+                        row += "\"" + item.description + "\",";
+                        row += item.latitude + ",";
+                        row += item.longitude ;
+                        row += ");"
+
+                        fileStream.write( row + "\n");
+
+                    } );
+
+                    fileStream.end();
+
+                }
+                else {
+                    console.log('Error while performing Query.');
+                }
+                conn.release();
+            }
+        )
+    });
 
 };
 

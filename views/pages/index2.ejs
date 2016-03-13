@@ -19,18 +19,18 @@
 
         map.addControl(new OpenLayers.Control.LayerSwitcher());
 
-        var eqStyleMap = new OpenLayers.StyleMap({pointRadius: 5 });
-        var dStyleMap = new OpenLayers.StyleMap({pointRadius: 5 });
+        var eqStyleMap = new OpenLayers.StyleMap({pointRadius: 5});
+        var dStyleMap = new OpenLayers.StyleMap({pointRadius: 5});
 
         var eqLookup = {
-            "small": {pointRadius: 2,fillColor: "yellow", fillOpacity: 0.5, strokeColor: "black"},
-            "medium": {pointRadius: 5,fillColor: "orange", fillOpacity: 0.5, strokeColor: "black"},
-            "large": {pointRadius: 10,fillColor: "red", fillOpacity: 0.5, strokeColor: "black"},
+            "small": {pointRadius: 2, fillColor: "yellow", fillOpacity: 0.5, strokeColor: "black"},
+            "medium": {pointRadius: 5, fillColor: "orange", fillOpacity: 0.5, strokeColor: "black"},
+            "large": {pointRadius: 10, fillColor: "red", fillOpacity: 0.5, strokeColor: "black"},
         };
 
         var dLookup = {
-            "Green": {pointRadius: 2,fillColor: "green", fillOpacity: 0.5, strokeColor: "black"},
-            "Red": {pointRadius: 2,fillColor: "red", fillOpacity: 0.5, strokeColor: "black"},
+            "Green": {pointRadius: 2, fillColor: "green", fillOpacity: 0.5, strokeColor: "black"},
+            "Red": {pointRadius: 2, fillColor: "red", fillOpacity: 0.5, strokeColor: "black"},
         };
 
         eqStyleMap.addUniqueValueRules("default", "size", eqLookup);
@@ -40,24 +40,22 @@
         disastersLayer = new OpenLayers.Layer.Vector('Disasters', {styleMap: dStyleMap});
 
 
-
-
         var features = new Array(0);
 
 
-        <!--<?php include 'earthquake_data.txt';  ?>-->
+       <% include earthquake_data.txt %>
 
-    quakesLayer.addFeatures(features);
+        quakesLayer.addFeatures(features);
 
-    <!--/**-->
-    <!--* Disasters-->
+        <!--/**-->
+        <!--* Disasters-->
 
-    var disasterFeatures = new Array(0);
+        var disasterFeatures = new Array(0);
 
-			<!--<?php-->
+        <!--<?php-->
 
-    <!--$num=0;-->
-    <!--while($row=mysqli_fetch_array($disasterResults)) {-->
+        <!--$num=0;-->
+        <!--while($row=mysqli_fetch_array($disasterResults)) {-->
 
         <!--echo "disasterFeatures[".$num."] = poi(" . $row['id'] . ","-->
         <!--. "\"".$row['alert_level'] ."\","-->
@@ -65,36 +63,36 @@
         <!--. "\"".$row['name'] ."\","-->
         <!--.$row['latitude'].",".$row['longitude'].");\n";-->
         <!--$num++;-->
-    <!--}-->
+        <!--}-->
 
 //        ?>
 
 
-    disastersLayer.addFeatures(disasterFeatures);
+        disastersLayer.addFeatures(disasterFeatures);
 
 
-    map.addLayer(quakesLayer);
-    map.addLayer(disastersLayer);
+        map.addLayer(quakesLayer);
+        map.addLayer(disastersLayer);
 
 
-    select = new OpenLayers.Control.SelectFeature( [quakesLayer,disastersLayer] );
+        select = new OpenLayers.Control.SelectFeature([quakesLayer, disastersLayer]);
 
-    quakesLayer.events.on( {
-        "featureselected": onFeatureSelect,
-        "featureunselected": onFeatureUnselect
-    });
+        quakesLayer.events.on({
+            "featureselected": onFeatureSelect,
+            "featureunselected": onFeatureUnselect
+        });
 
-    disastersLayer.events.on( {
-        "featureselected": onFeatureSelect,
-        "featureunselected": onFeatureUnselect
-    });
-
-
-    map.addControl(select);
-    select.activate();
+        disastersLayer.events.on({
+            "featureselected": onFeatureSelect,
+            "featureunselected": onFeatureUnselect
+        });
 
 
-    map.zoomToMaxExtent();
+        map.addControl(select);
+        select.activate();
+
+
+        map.zoomToMaxExtent();
     }
 
 </script>
@@ -106,9 +104,10 @@
     -->
     <% include ../partials/header.ejs %>
 
-
     <table width="60%" align="center" id="summary-header">
-        <tr><th colspan="4">24 Hour Summary</th></tr>
+        <tr>
+            <th colspan="4">24 Hour Summary</th>
+        </tr>
         <tr>
             <td><a href="/earthquakes">Earthquakes</a></td>
             <td class="table-divider"><a href="/earthquakes"><%= earthquakesToday %></a></td>
@@ -146,10 +145,13 @@
 </div>
 
 <script type="text/javascript">
-    (function() {
-        var li = document.createElement('script'); li.type = 'text/javascript'; li.async = true;
+    (function () {
+        var li = document.createElement('script');
+        li.type = 'text/javascript';
+        li.async = true;
         li.src = ('https:' == document.location.protocol ? 'https:' : 'http:') + '//platform.stumbleupon.com/1/widgets.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(li, s);
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(li, s);
     })();
 </script>
 
