@@ -1,0 +1,139 @@
+<?php
+
+require_once ('./db.php');
+
+$conn = mysqli_connect($host, $username, $password, $dbname);
+if (mysqli_connect_errno()) {
+	echo "Failed to connect to MYSQL: " . mysqli_connect_error();
+}
+
+/** Get the summary information */
+$summaryResult = mysqli_query($conn, "SELECT * from spaceweather_summary_view order by date desc limit 7") or die(mysql_error());
+
+$stmt = NULL;
+$date = NULL;
+
+$stmt = mysqli_stmt_init($conn);
+
+if (isset($_GET['date'])) {
+	$date = $_GET['date'];
+	$query = "SELECT message_type,name,issuetime,description from spaceweather where date(issuetime)=?";
+
+	if (mysqli_stmt_prepare($stmt, $query)) {
+		mysqli_stmt_bind_param($stmt, "s", $date);
+	} else {
+		die(mysql_error());
+	}
+} else {
+	$query = "SELECT message_type,name,issuetime,description from spaceweather_today_view order by message_type asc,issuetime desc";
+	if (!mysqli_stmt_prepare($stmt, $query)) {
+		die(mysql_error());
+	}
+}
+
+mysqli_stmt_execute($stmt);
+mysqli_stmt_store_result($stmt);
+mysqli_stmt_bind_result($stmt, $messageType, $name, $issuetime , $description);
+?>
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN">
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+		<title>Doomometer - Space Weather</title>
+
+		<link href="UrbanArtist.css" rel="stylesheet" type="text/css">
+		<link rel="shortcut icon" href="doom.ico">
+
+		<script src="scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
+
+	</head>
+
+	<body>
+		<div id="wrap">
+
+			<?php include 'header.html' ?>
+
+			<!-- content-wrap starts -->
+			<div id="content-wrap">
+				<div id="main">
+					<h2>Space Weather reports</h2>
+					<p>
+						<?php
+
+						if (isset($date)) {
+							echo mysqli_stmt_num_rows($stmt) ." Space Weather reports published on " . date("d-m-Y", strtotime($date));
+						} else {
+							echo mysqli_stmt_num_rows($stmt) . " Space weather reports published in the last 24 hours.";
+						}
+						?>
+
+					</p>
+
+					<?php
+					
+					while ( mysqli_stmt_fetch($stmt)) {
+
+						echo "<h3>";
+
+						if ($messageType == "ALT") {
+							echo "<font color=\"Crimson\">Alert : ";
+						} else if ($messageType == "WAR") {
+							echo "<font color=\"SandyBrown\"> Warning : ";
+						} else if ($messageType == "SUM") {
+							echo "<font color=\"Yellow\"> Summary : ";
+						} else if ($messageType == "WAT") {
+							echo "<font color=\"Yellow\"> Watch : ";
+						} else {
+							echo "<font color=\"Green\">";
+						}
+						echo $name . "</font></h3>";
+
+						echo "<p class='post-info'> Issued " . date("d-m-Y G:i", strtotime($issuetime)) . "</p>";
+
+						echo "<p><table><tr><th>Title</th><th>Information</th></tr>" . $description . "</table></p>";
+
+					}
+					?>
+				</div>
+				<div id="sidebar">
+					<h3>Weekly Summary</h3>
+
+					<table>
+						<tr>
+							<th>Date</th><th>Published Space weather reports</th>
+						</tr>
+
+						<?php
+						while ($row = mysqli_fetch_array($summaryResult)) {
+							echo "<tr><td><a href=\"spaceweather.php?date=" . date("Y-m-d", strtotime($row['date'])) . "\"/>" . date("d-m-Y", strtotime($row['date'])) . "</a></td><td>" . $row['count'] . "</td><td></tr>";
+						}
+						?>
+					</table>
+
+				</div>
+
+				<?php include 'footer.html' ?>
+
+			</div>
+
+		</div>
+	</body>
+</html>
+
+<?php
+include_once $_SERVER['DOCUMENT_ROOT'] . '../trace/api/LogRequest.php';
+twatchLogRequest();
+?>
+
+<?php
+if (isset($stmt)) {
+	mysqli_stmt_close($stmt);
+}
+
+mysqli_free_result($summaryResult);
+mysqli_close($conn);
+?>
