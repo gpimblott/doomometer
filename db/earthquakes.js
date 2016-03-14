@@ -5,6 +5,12 @@ var dbpool = require('../config/dbpool');
 var Earthquakes = function () {};
 
 
+Earthquakes.refresh = function() {
+    Earthquakes.today();
+    Earthquakes.top30();
+    Earthquakes.summary();
+}
+
 Earthquakes.today = function() {
     /**
      * Create the list of earthquakes for the front page

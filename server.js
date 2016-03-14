@@ -129,14 +129,10 @@ var DoomApp = function () {
         self.createCronJobs = function () {
 
             console.log("Starting CRON jobs");
-            var job = new cronJob('0 */1 * * *', stats.update() , null, true, null, null, true);
+            var statsJob = new cronJob('0 */1 * * *', stats.refresh() , null, true, null, null, true);
+            var earthquakeJob = new cronJob('0 */1 * * *', earthquakes.refresh() , null, true, null, null, true);
+            var virusJob = new cronJob('0 */1 * * *', virus.refresh() , null, true, null, null, true);
 
-            earthquakes.top30();
-            earthquakes.summary();
-            earthquakes.today();
-            
-            virus.top30();
-            virus.summary();
         };
 
 

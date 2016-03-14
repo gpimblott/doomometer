@@ -40,7 +40,7 @@ OverviewStats.alertState = function() {
 /**
  *
  */
-OverviewStats.update = function () {
+OverviewStats.refresh = function () {
     dbpool.getConnection(function (err, conn) {
         conn.query('SELECT count(*) as num from spaceweather_today_view', function (err, rows) {
                 if (!err) {
