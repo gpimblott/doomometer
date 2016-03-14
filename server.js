@@ -7,8 +7,9 @@ var bodyParser = require('body-parser');
 
 var cronJob = require('cron').CronJob;
 
-var stats = require('./overview');
-
+var stats = require('./db/overview');
+var earthquakes = require('./db/earthquakes');
+var virus = require('./db/virus.js');
 
 
 
@@ -91,6 +92,23 @@ var DoomApp = function () {
                 res.redirect("http://doom.pimblott.com");
             });
 
+            self.app.get('/earthquakes', function (req, res) {
+                res.render('pages/earthquakes.ejs')
+            });
+
+            self.app.get('/cyber' , function(req,res) {
+                res.render('pages/cyber.ejs')
+            });
+
+            self.app.get('/ping' , function (req,res) {
+                res.send('pong');
+
+            });
+
+            self.app.get('/about' , function(req,res) {
+                res.render('pages/about.ejs');
+            })
+
             self.app.get('/gp', function (req, res) {
                 res.render('pages/index2',
                     {   earthquakesToday : stats.earthquakesToday() ,
@@ -111,7 +129,14 @@ var DoomApp = function () {
         self.createCronJobs = function () {
 
             console.log("Starting CRON jobs");
-            var job = new cronJob('* * * * *', stats.update() , null, true, null, null, true);
+            var job = new cronJob('0 */1 * * *', stats.update() , null, true, null, null, true);
+
+            earthquakes.top30();
+            earthquakes.summary();
+            earthquakes.today();
+            
+            virus.top30();
+            virus.summary();
         };
 
 

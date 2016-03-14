@@ -10,14 +10,14 @@
 		<body>
 			<div id="wrap">
 
-				<?php include 'header.html' ?>
+				<% include ../partials/header.ejs %>
 
 				<!-- content-wrap starts -->
 				<div id="content-wrap">
 
 					<div id="main">
 
-						<h2><a href="index.php">Overview</a></h2>
+						<h2><a href="/">Overview</a></h2>
 
 						<p>
 							The Doom-O-meter is developed by G.Pimblott for general interest using publically available
@@ -30,7 +30,7 @@
 							Information on my other projects can be found at <a href="www.pimblott.com">www.pimblott.com</a>
 						</p>
 
-						<h2><a href="index.html">Website design</a></h2>
+						<h2><a href="/">Website design</a></h2>
 
 						<h3>Template</h3>
 						<p>
@@ -41,7 +41,7 @@
 							All credit to <a href="http://www.styleshout.com/">UrbanArtist</a>.
 						</p>
 
-						<h2><a href="index.html">Information feeds</a></h2>
+						<h2><a href="/">Information feeds</a></h2>
 
 						<p>
 							All of the information feeds used on this website are retrieved from public RSS and XML sources on the
@@ -108,8 +108,7 @@
 							<a href="https://www.mi5.gov.uk/home/the-threats/terrorism/threat-levels.html"/> UK MI5 Security Service</a>
 						</p>
 
-						<?php include 'footer.html' ?>
-						<!-- main ends -->
+						<% include ../partials/footer.ejs%>
 					</div>
 				</div>
 		</body>
