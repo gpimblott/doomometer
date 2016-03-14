@@ -20,7 +20,7 @@ Earthquakes.today = function() {
         conn.query('SELECT * from earthquakes_today_view', function (err, rows) {
                 if (!err) {
 
-                    var path = "views/pages/data/earthquake_data.txt";
+                    var path = "views/pages/earthquake_data.txt";
                     var fileStream = fs.createWriteStream(path);
 
                     rows.forEach( function (item, index) {
@@ -71,7 +71,7 @@ Earthquakes.top30 = function() {
         conn.query('SELECT url,description,depth,time from earthquakes_today_view order by magnitude desc limit 30', function (err, rows) {
                 if (!err) {
 
-                    var path = "views/pages/data/earthquake_top30.txt";
+                    var path = "views/pages/earthquake_top30.txt";
                     var fileStream = fs.createWriteStream(path);
 
                     rows.forEach( function (item, index) {
@@ -110,7 +110,7 @@ Earthquakes.summary = function() {
         conn.query('SELECT * from earthquakes_summary_view order by date desc limit 7', function (err, rows) {
                 if (!err) {
 
-                    var path = "views/pages/data/earthquake_summary.txt";
+                    var path = "views/pages/earthquake_summary.txt";
                     var fileStream = fs.createWriteStream(path);
 
                     rows.forEach( function (item, index) {

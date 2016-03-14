@@ -43,7 +43,7 @@
 
             var features = new Array(0);
 
-            <% include data/earthquake_data.txt %>
+            <% include earthquake_data.txt %>
 
             quakesLayer.addFeatures(features);
 
@@ -97,7 +97,7 @@
                     <th>Time</th>
                     <th></th>
                 </tr>
-                <% include data/earthquake_top30.txt %>
+                <% include earthquake_top30.txt %>
             </table>
         </div>
         <div id="sidebar">
@@ -109,7 +109,7 @@
                     <th>Total earthquakes</th>
                     <th>Average Magnitude</th>
                 </tr>
-               <% include data/earthquake_summary.txt %>
+               <% include earthquake_summary.txt %>
             </table>
             <h3>Locations</h3>
             <div id="basicMap"></div>

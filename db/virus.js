@@ -20,7 +20,7 @@ Virus.top30 = function() {
         conn.query('SELECT url,name,time from virus_today_view', function (err, rows) {
                 if (!err) {
 
-                    var path = "views/pages/data/virus_top30.txt";
+                    var path = "views/pages/virus_top30.txt";
                     var fileStream = fs.createWriteStream(path);
 
                     rows.forEach( function (item, index) {
@@ -59,7 +59,7 @@ Virus.summary = function() {
         conn.query('SELECT * from virus_summary_view order by date desc limit 7', function (err, rows) {
                 if (!err) {
 
-                    var path = "views/pages/data/virus_summary.txt";
+                    var path = "views/pages/virus_summary.txt";
                     var fileStream = fs.createWriteStream(path);
 
                     rows.forEach( function (item, index) {
