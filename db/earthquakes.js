@@ -68,7 +68,7 @@ Earthquakes.top30 = function() {
      */
     dbpool.getConnection(function (err, conn) {
 
-        conn.query('SELECT url,description,depth,time from earthquakes_today_view order by magnitude desc limit 30', function (err, rows) {
+        conn.query('SELECT url,description,depth,time from earthquakes_today_view order by magnitude desc limit 20', function (err, rows) {
                 if (!err) {
 
                     var path = "views/pages/earthquake_top30.txt";

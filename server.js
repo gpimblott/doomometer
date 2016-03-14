@@ -129,9 +129,9 @@ var DoomApp = function () {
         self.createCronJobs = function () {
 
             console.log("Starting CRON jobs");
-            var statsJob = new cronJob('0 */1 * * *', stats.refresh() , null, true, null, null, true);
-            var earthquakeJob = new cronJob('0 */1 * * *', earthquakes.refresh() , null, true, null, null, true);
-            var virusJob = new cronJob('0 */1 * * *', virus.refresh() , null, true, null, null, true);
+            var statsJob = new cronJob('0 */30 * * *', stats.refresh() , null, true, null, null, true);
+            var earthquakeJob = new cronJob('0 */30 * * *', earthquakes.refresh() , null, true, null, null, true);
+            var virusJob = new cronJob('0 */30 * * *', virus.refresh() , null, true, null, null, true);
 
         };
 
