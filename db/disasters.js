@@ -6,6 +6,7 @@ var Disasters = function () {};
 
 
 Disasters.refresh = function() {
+    console.log("Disasters refresh");
     Disasters.today();
     Disasters.summary();
     Disasters.top30();

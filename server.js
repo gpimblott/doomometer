@@ -6,6 +6,7 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 
 var cronJob = require('cron').CronJob;
+var keepalive = require('./keepalive');
 
 var stats = require('./db/overview');
 var earthquakes = require('./db/earthquakes');
@@ -106,8 +107,8 @@ var DoomApp = function () {
             });
 
             self.app.get('/ping' , function (req,res) {
+                console.log("ping");
                 res.send('pong');
-
             });
 
             self.app.get('/about' , function(req,res) {
@@ -139,6 +140,7 @@ var DoomApp = function () {
             var virusJob = new cronJob('0 */30 * * *', virus.refresh() , null, true, null, null, true);
             var disasterJob = new cronJob('0 */30 * * *', disasters.refresh() , null, true, null, null, true);
 
+            var pingJob = new cronJob('0 */60 * * *', keepalive.ping() , null, true, null, null, true);
         };
 
 

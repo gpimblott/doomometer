@@ -6,6 +6,7 @@ var Virus = function () {};
 
 
 Virus.refresh = function() {
+    console.log("Virus refresh");
     Virus.summary();
     Virus.top30();
 }

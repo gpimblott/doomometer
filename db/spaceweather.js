@@ -2,58 +2,20 @@ var fs = require("fs");
 var dbpool = require('../config/dbpool');
 
 
-var Disasters = function () {};
+var SpaceWeather = function () {};
 
 
-Disasters.refresh = function() {
-    Disasters.today();
-    Disasters.summary();
-    Disasters.top30();
+SpaceWeather.refresh = function() {
+    console.log("Space weather refresh");
+    SpaceWeather.summary();
+    SpaceWeather.top30();
 }
 
-Disasters.today = function() {
+
+
+SpaceWeather.top30 = function() {
     /**
-     * Create the list of earthquakes for the front page
-     */
-    dbpool.getConnection(function (err, conn) {
-
-        conn.query('SELECT * from disasters_today_view', function (err, rows) {
-                if (!err) {
-
-                    var path = "views/pages/disaster_data.txt";
-                    var fileStream = fs.createWriteStream(path);
-
-                    rows.forEach( function (item, index) {
-
-                        var row = "features[" + index + "] = poi(";
-                        row += item.id + ",";
-                        row += "\"" + item.alert_level + "\",";
-                        row += "\"" + item.url + "\",";
-                        row += "\"" + item.name + "\",";
-                        row += item.latitude + ",";
-                        row += item.longitude ;
-                        row += ");"
-
-                        fileStream.write( row + "\n");
-
-                    } );
-
-                    fileStream.end();
-
-                }
-                else {
-                    console.log('Error while performing Query.');
-                }
-                conn.release();
-            }
-        )
-    });
-
-}
-
-Disasters.top30 = function() {
-    /**
-     * Create the list of virus' for the front page
+     * Create the list of space weather for the front page
      */
     dbpool.getConnection(function (err, conn) {
 
@@ -86,7 +48,7 @@ Disasters.top30 = function() {
     });
 }
 
-Disasters.summary = function() {
+SpaceWeather.summary = function() {
     /**
      * Create the list of virus for the front page
      */
@@ -159,4 +121,4 @@ function formatLinkDate(d) {
     return year + "-" + month + "-" + day;
 }
 
-module.exports = Disasters;
+module.exports = SpaceWeather;

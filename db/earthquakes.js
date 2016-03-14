@@ -6,6 +6,7 @@ var Earthquakes = function () {};
 
 
 Earthquakes.refresh = function() {
+    console.log("Earthquakes refresh");
     Earthquakes.today();
     Earthquakes.top30();
     Earthquakes.summary();
