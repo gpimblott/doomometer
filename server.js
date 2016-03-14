@@ -10,6 +10,7 @@ var cronJob = require('cron').CronJob;
 var stats = require('./db/overview');
 var earthquakes = require('./db/earthquakes');
 var virus = require('./db/virus.js');
+var disasters = require('./db/disasters.js');
 
 
 
@@ -100,6 +101,10 @@ var DoomApp = function () {
                 res.render('pages/cyber.ejs')
             });
 
+            self.app.get('/disasters' , function(req,res) {
+                res.render('pages/disasters.ejs')
+            });
+
             self.app.get('/ping' , function (req,res) {
                 res.send('pong');
 
@@ -132,6 +137,7 @@ var DoomApp = function () {
             var statsJob = new cronJob('0 */30 * * *', stats.refresh() , null, true, null, null, true);
             var earthquakeJob = new cronJob('0 */30 * * *', earthquakes.refresh() , null, true, null, null, true);
             var virusJob = new cronJob('0 */30 * * *', virus.refresh() , null, true, null, null, true);
+            var disasterJob = new cronJob('0 */30 * * *', disasters.refresh() , null, true, null, null, true);
 
         };
 
