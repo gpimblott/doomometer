@@ -1,7 +1,7 @@
 {
-  "name": "OpenShift-Sample-App",
+  "name": "Doomometer",
   "version": "1.0.0",
-  "description": "OpenShift Sample Application",
+  "description": "The Doomometer",
   "keywords": [
     "OpenShift",
     "Node.js",
@@ -9,11 +9,11 @@
     "openshift"
   ],
   "author": {
-    "name": "OpenShift",
-    "email": "ramr@example.org",
-    "url": "http://www.openshift.com/"
+    "name": "Gordon Pimblott",
+    "email": "gordon@pimblott.com",
+    "url": "http://www.pimblott.com"
   },
-  "homepage": "http://www.openshift.com/",
+  "homepage": "http://www.pimblott.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/openshift/origin-server"

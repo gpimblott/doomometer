@@ -9,7 +9,7 @@ Keepalive.ping = function () {
         hostname: 'doomometer-gpimblott.rhcloud.com',
         port: 80,
         path: '/ping',
-        agent: false  }, (res) => {
+        agent: false  }, function(req,res) { 
 
         console.log("Pinged server");
     });
