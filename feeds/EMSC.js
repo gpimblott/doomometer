@@ -1,22 +1,24 @@
-var mysql  = require('mysql');
+var mysql = require('mysql');
 var config = require('../config/db');
 
 var FeedParser = require('feedparser');
 var request = require('request');
 
-var MI5 = function () {};
 
 
-MI5.refresh = function() {
+var EMSC = function () {};
 
-    var req = request("https://www.mi5.gov.uk/UKThreatLevel/UKThreatLevel.xml");
+
+EMSC.refresh = function() {
+    var req = request("http://www.emsc-csem.org/service/rss/rss.php?typ=emsc");
 
 
     var feedparser = new FeedParser();
 
     req.on('error', function (error) {
-        // handle any request errors
+        console.log(error);
     });
+
     req.on('response', function (res) {
         var stream = this;
 
@@ -44,34 +46,60 @@ MI5.refresh = function() {
             port: config.mysql.port,
         });
 
+
         connection.connect(function (err) {
             if (err) {
                 console.error('error connecting: ' + err.stack);
                 return;
             }
 
+
+            // var values = [];
+
             while (item = stream.read()) {
-                console.log(item);
+                //console.log(item);
 
                 var title = item.title;
                 var link = item.link;
-                var time = item.date;
-                var description = item.description;
 
-                var state = "UNKNOWN";
-                if (startsWith($description, "The current UK threat level is ")) {
-                    $state = substr($description, 31);
-                    $a = explode(" ", $state);
-                    $state = $a[0];
-                }
+                var lat = item["geo:lat"]['#'];
+                var lon = item["geo:long"]['#'];
+
+                var depth = item["emsc:depth"]['#'];
+                var time = item["emsc:time"]['#'];
+                var magnitude = item["emsc:magnitude"]['#'];
+                var parts = magnitude.split(' ');
+                var location = title.substr(8);
 
 
+                //var row = [title, lat, lon, time, 1, depth, parts[1], link,location,location];
+                //values.push(row);
+
+                var post = {
+                    description: title, latitude: lat, longitude: lon, time: time,
+                    event_type: 1, depth: depth, magnitude: parts[1], url: link,
+                    location_name: location, name: location
+                };
+
+
+                query = connection.query('INSERT INTO earthquakes SET ?', post, function (err, result) {
+                    if (err) {
+                        console.log(err);
+                    }
+
+                });
+
+                //console.log(query.sql);
 
             }
 
             connection.end();
+
+
         });
+
+
     });
 }
 
-module.exports = MI5;
+module.exports = EMSC;

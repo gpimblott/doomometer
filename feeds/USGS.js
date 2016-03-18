@@ -4,12 +4,13 @@ var config = require('../config/db');
 var FeedParser = require('feedparser');
 var request = require('request');
 
-var MI5 = function () {};
+
+var USGS = function () {};
 
 
-MI5.refresh = function() {
+USGS.refresh = function() {
 
-    var req = request("https://www.mi5.gov.uk/UKThreatLevel/UKThreatLevel.xml");
+    var req = request("http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.atom");
 
 
     var feedparser = new FeedParser();
@@ -51,21 +52,34 @@ MI5.refresh = function() {
             }
 
             while (item = stream.read()) {
-                console.log(item);
+                //console.log(item);
 
                 var title = item.title;
                 var link = item.link;
                 var time = item.date;
-                var description = item.description;
 
-                var state = "UNKNOWN";
-                if (startsWith($description, "The current UK threat level is ")) {
-                    $state = substr($description, 31);
-                    $a = explode(" ", $state);
-                    $state = $a[0];
-                }
+                var point = item["georss:point"]['#'];
+                var latlon = point.split(' ');
+                var elev = item["georss:elev"]['#'];
+                var depth = elev / 1000;
+                var location = title.substr(8);
+                var magnitude = title.substr(1, 6);
 
 
+                var post = {
+                    description: title, latitude: latlon[0], longitude: latlon[1], time: time,
+                    event_type: 1, depth: depth, magnitude: magnitude, url: link,
+                    location_name: location, name: location
+                };
+
+
+                query = connection.query('INSERT INTO earthquakes SET ?', post, function (err, result) {
+                    if (err) console.log(err);
+
+                    //console.log(result);
+                });
+
+                //console.log(query.sql);
 
             }
 
@@ -74,4 +88,4 @@ MI5.refresh = function() {
     });
 }
 
-module.exports = MI5;
+module.exports = USGS;

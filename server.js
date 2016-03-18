@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var bodyParser = require('body-parser');
 
-var cronJob = require('cron').CronJob;
+var schedule = require('node-schedule');
 var keepalive = require('./keepalive');
 
 var stats = require('./db/overview');
@@ -34,7 +34,7 @@ var DoomApp = function () {
         self.setupVariables = function () {
             //  Set the environment variables we need.
             self.ipaddress = process.env.OPENSHIFT_NODEJS_IP;
-            self.port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+            self.port = process.env.OPENSHIFT_NODEJS_PORT || 8090;
 
             if (typeof self.ipaddress === "undefined") {
                 //  Log errors on OpenShift but continue w/ 127.0.0.1 - this
@@ -135,11 +135,28 @@ var DoomApp = function () {
         self.createCronJobs = function () {
 
             console.log("Starting CRON jobs");
-            var statsJob = new cronJob('0 */5 * * *', stats.refresh() , null, true, null, null, true);
-            var earthquakeJob = new cronJob('0 */5 * * *', earthquakes.refresh() , null, true, null, null, true);
-            var virusJob = new cronJob('0 */5 * * *', virus.refresh() , null, true, null, null, true);
-            var disasterJob = new cronJob('0 */5 * * *', disasters.refresh() , null, true, null, null, true);
-            var pingJob = new cronJob('0 */5 * * *', keepalive.ping() , null, true, null, null, true);
+
+            var pingJob = schedule.scheduleJob('*/1 * * * *', function(){
+                keepalive.ping();
+            });
+
+            var statsJob = schedule.scheduleJob('*/1 * * * *', function(){
+                stats.refresh();
+            });
+
+            var earthquakeJob = schedule.scheduleJob('*/30 * * * *', function(){
+                earthquakes.refresh();
+            });
+
+
+            var virusJob = schedule.scheduleJob('*/30 * * * *', function(){
+                virus.refresh();
+            });
+
+            var disasterJob = schedule.scheduleJob('*/30 * * * *', function(){
+                disasters.refresh();
+            });
+
         };
 
 
@@ -170,6 +187,14 @@ var DoomApp = function () {
         };
 
 
+        self.initData = function() {
+            earthquakes.refresh();
+            stats.refresh();
+            virus.refresh();
+            disasters.refresh();
+
+        }
+
         /**
          *  Initializes the sample application.
          */
@@ -179,6 +204,9 @@ var DoomApp = function () {
 
             // Create the express server and routes.
             self.initializeServer();
+
+            // Initialise all of the tables etc before the schedules kick in
+            self.initData();
         };
 
 

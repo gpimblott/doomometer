@@ -1,5 +1,7 @@
 var fs = require("fs");
 var dbpool = require('../config/dbpool');
+var emsc = require('../feeds/EMSC.js');
+var usgs = require('../feeds/USGS.js');
 
 
 var Earthquakes = function () {};
@@ -7,12 +9,17 @@ var Earthquakes = function () {};
 
 Earthquakes.refresh = function() {
     console.log("Earthquakes refresh");
+
+    emsc.refresh();
+    usgs.refresh();
+
     Earthquakes.today();
     Earthquakes.top30();
     Earthquakes.summary();
 }
 
 Earthquakes.today = function() {
+
     /**
      * Create the list of earthquakes for the front page
      */
