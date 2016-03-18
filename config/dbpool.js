@@ -9,6 +9,7 @@ var pool = mysql.createPool({
     user     : config.mysql.username,
     password : config.mysql.password,
     database : config.mysql.dbname,
+    port     : config.mysql.port,
     debug    :  false
 });
 

@@ -22,7 +22,7 @@ SpaceWeather.top30 = function() {
         conn.query('SELECT url,name,description,fromdate,todate,id,alert_level from disasters_today_view', function (err, rows) {
                 if (!err) {
 
-                    var path = "views/pages/disaster_top30.txt";
+                    var path = "views/pages/spaceweather_top30.txt";
                     var fileStream = fs.createWriteStream(path);
 
                     rows.forEach( function (item, index) {

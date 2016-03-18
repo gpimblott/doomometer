@@ -31,7 +31,9 @@
     "ejs": "^1.0.0",
     "cookie-parser":"latest",
     "node-mysql": "latest",
-    "cron" : "latest"
+    "cron" : "latest",
+    "feedparser" : "latest",
+    "request" : "latest"
   },
   "devDependencies": {},
   "bundleDependencies": [],
