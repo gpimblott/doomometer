@@ -21,7 +21,7 @@ Disasters.today = function() {
         conn.query('SELECT * from disasters_today_view', function (err, rows) {
                 if (!err) {
 
-                    var path = "views/pages/disaster_data.txt";
+                    var path = "views/cache/disaster_data.txt";
                     var fileStream = fs.createWriteStream(path);
 
                     rows.forEach( function (item, index) {
@@ -61,7 +61,7 @@ Disasters.top30 = function() {
         conn.query('SELECT url,name,description,fromdate,todate,id,alert_level from disasters_today_view', function (err, rows) {
                 if (!err) {
 
-                    var path = "views/pages/disaster_top30.txt";
+                    var path = "views/cache/disaster_top30.txt";
                     var fileStream = fs.createWriteStream(path);
 
                     rows.forEach( function (item, index) {
@@ -96,7 +96,7 @@ Disasters.summary = function() {
         conn.query('SELECT * FROM disasters_summary_view ORDER BY date DESC limit 7', function (err, rows) {
                 if (!err) {
 
-                    var path = "views/pages/disaster_summary.txt";
+                    var path = "views/cache/disaster_summary.txt";
                     var fileStream = fs.createWriteStream(path);
 
                     rows.forEach( function (item, index) {

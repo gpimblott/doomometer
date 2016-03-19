@@ -1,0 +1,3 @@
+<tr><td><a href="earthquakes?date=2016-03-19">19-03-2016</a></td><td>257</td><td>2.47</td><td><a href="earthquakes?date=2016-03-19">View</a></td></tr>
+<tr><td><a href="earthquakes?date=2016-03-18">18-03-2016</a></td><td>648</td><td>1.81</td><td><a href="earthquakes?date=2016-03-18">View</a></td></tr>
+<tr><td><a href="earthquakes?date=2016-03-17">17-03-2016</a></td><td>35</td><td>1.24</td><td><a href="earthquakes?date=2016-03-17">View</a></td></tr>

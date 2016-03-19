@@ -36,7 +36,7 @@
 
 			var features = new Array(0);
 
-			<% include disaster_data.txt %>
+			<% include ../cache/disaster_data.txt %>
 	
 			disastersLayer.addFeatures(features);
 
@@ -73,7 +73,7 @@
 					</p>
 					
 					
-					<% include disaster_top30.txt %>
+					<% include ../cache/disaster_top30.txt %>
 				
 				</div>
 				<div id="sidebar">
@@ -82,7 +82,7 @@
 					<table>
 						<tr><th>Date</th><th>Published Disasters</th></tr>
 						
-						<%include disaster_summary.txt %>
+						<%include ../cache/disaster_summary.txt %>
 					</table>
 					<h3>Locations</h3>
 					<div id="basicMap"></div>
