@@ -131,6 +131,16 @@ var DoomApp = function () {
                         alertState       : stats.alertState() });
             });
 
+            self.app.get('/test', function (req, res) {
+                res.render('pages/index2',
+                    {   earthquakesToday : stats.earthquakesToday() ,
+                        virusToday       : stats.virusToday(),
+                        disastersToday   : stats.disastersToday(),
+                        spaceWeatherToday: stats.spaceWeatherToday(),
+                        averageMagnitude : stats.averageMagnitude(),
+                        alertState       : stats.alertState() });
+            });
+
             self.app.get('/updatefeeds', function (req,res) {
                 feeds.refresh();
                 res.send("Feeds updated");

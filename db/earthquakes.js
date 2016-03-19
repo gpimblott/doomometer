@@ -27,8 +27,8 @@ Earthquakes.today = function() {
                     var path = "views/cache/earthquake_data.txt";
                     var fileStream = fs.createWriteStream(path);
 
-                    rows.forEach( function (item, index) {
 
+                    rows.forEach( function (item, index) {
 
                         var row = "features[" + index + "] = poi(";
                         row += item.id + ",\"";
@@ -54,6 +54,7 @@ Earthquakes.today = function() {
                     } );
 
                     fileStream.end();
+
 
                 }
                 else {

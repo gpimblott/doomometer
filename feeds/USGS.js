@@ -8,6 +8,7 @@ var request = require('request');
 var USGS = function () {};
 
 
+
 USGS.refresh = function() {
 
     var req = request("http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.atom");
@@ -56,7 +57,7 @@ USGS.refresh = function() {
 
                 var title = item.title;
                 var link = item.link;
-                var time = item.date;
+                var time = item.pubdate;
 
                 var point = item["georss:point"]['#'];
                 var latlon = point.split(' ');
@@ -65,19 +66,19 @@ USGS.refresh = function() {
                 var location = title.substr(8);
                 var magnitude = title.substr(1, 6);
 
-
-                var post = {
-                    description: title, latitude: latlon[0], longitude: latlon[1], time: time,
-                    event_type: 1, depth: depth, magnitude: magnitude, url: link,
-                    location_name: location, name: location
-                };
-
-
-                query = connection.query('INSERT IGNORE INTO earthquakes SET ?', post, function (err, result) {
-                    if (err) console.log(err);
-
-                    //console.log(result);
-                });
+                //
+                //var post = {
+                //    description: title, latitude: latlon[0], longitude: latlon[1], time: time,
+                //    event_type: 1, depth: depth, magnitude: magnitude, url: link,
+                //    location_name: location, name: location
+                //};
+                //
+                //
+                //query = connection.query('INSERT IGNORE INTO earthquakes SET ?', post, function (err, result) {
+                //    if (err) console.log(err);
+                //
+                //    //console.log(result);
+                //});
 
                 //console.log(query.sql);
 
@@ -89,3 +90,5 @@ USGS.refresh = function() {
 }
 
 module.exports = USGS;
+
+//USGS.refresh();
