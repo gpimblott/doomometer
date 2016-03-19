@@ -1,7 +1,7 @@
-var mi5 = require("./mi5.js");
-var emsc = require("./emsc.js");
-var noaa = require("./noaa.js");
-var usgs = require("./usgs.js");
+var mi5 = require("./MI5.js");
+var emsc = require("./EMSC.js");
+var noaa = require("./NOAA.js");
+var usgs = require("./USGS.js");
 
 var Feeds = function () {};
 
