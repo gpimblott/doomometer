@@ -1,24 +1,22 @@
-var mysql = require('mysql');
+var mysql  = require('mysql');
 var config = require('../config/db');
 
 var FeedParser = require('feedparser');
 var request = require('request');
 
+var Sophos = function () {};
 
 
-var EMSC = function () {};
+Sophos.refresh = function() {
 
-
-EMSC.refresh = function() {
-    var req = request("http://www.emsc-csem.org/service/rss/rss.php?typ=emsc");
+    var req = request("http://www.sophos.com/en-us/rss/threats/latest-viruses.aspx");
 
 
     var feedparser = new FeedParser();
 
     req.on('error', function (error) {
-        console.log(error);
+        // handle any request errors
     });
-
     req.on('response', function (res) {
         var stream = this;
 
@@ -29,7 +27,8 @@ EMSC.refresh = function() {
 
 
     feedparser.on('error', function (error) {
-        // always handle errors
+        console.log(error);
+
     });
     feedparser.on('readable', function () {
         // This is where the action is!
@@ -46,57 +45,37 @@ EMSC.refresh = function() {
             port: config.mysql.port,
         });
 
-
         connection.connect(function (err) {
             if (err) {
                 console.error('error connecting: ' + err.stack);
                 return;
             }
 
-
-            // var values = [];
-
             while (item = stream.read()) {
                 //console.log(item);
 
+
                 var title = item.title;
                 var link = item.link;
-
-                var lat = item["geo:lat"]['#'];
-                var lon = item["geo:long"]['#'];
-
-                var depth = item["emsc:depth"]['#'];
-                var time = item["emsc:time"]['#'];
-                var magnitude = item["emsc:magnitude"]['#'];
-                var parts = magnitude.split(' ');
-                var location = title.substr(8);
+                var pubDate =  item.pubdate;
 
 
                 var post = {
-                    description: title, latitude: lat, longitude: lon, time: time,
-                    event_type: 1, depth: depth, magnitude: parts[1], url: link,
-                    location_name: location, name: location
-                };
+                    name: title, time: pubDate, url: link };
 
 
-                query = connection.query('INSERT IGNORE INTO earthquakes SET ?', post, function (err, result) {
-                    if (err) {
-                        console.log(err);
-                    }
+                query = connection.query('INSERT IGNORE INTO virus SET ?', post, function (err, result) {
+                    if (err) console.log(err);
 
+                   // console.log(result);
                 });
 
-                //console.log(query.sql);
 
             }
 
             connection.end();
-
-
         });
-
-
     });
 }
 
-module.exports = EMSC;
+module.exports = Sophos;

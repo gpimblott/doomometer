@@ -2,6 +2,8 @@ var mi5 = require("./MI5.js");
 var emsc = require("./EMSC.js");
 var noaa = require("./NOAA.js");
 var usgs = require("./USGS.js");
+var gdacs = require("./GDACS.js");
+var sophos = require("./sophos.js");
 
 var Feeds = function () {};
 
@@ -14,6 +16,8 @@ Feeds.refresh = function() {
     emsc.refresh();
     usgs.refresh();
     noaa.refresh();
+    gdacs.refresh();
+    sophos.refresh();
 }
 
 module.exports = Feeds;

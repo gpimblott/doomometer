@@ -41,6 +41,7 @@ OverviewStats.alertState = function() {
  *
  */
 OverviewStats.refresh = function () {
+    console.log("Updating overview stats");
     dbpool.getConnection(function (err, conn) {
         conn.query('SELECT count(*) as num from spaceweather_today_view', function (err, rows) {
                 if (!err) {

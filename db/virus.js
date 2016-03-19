@@ -29,8 +29,7 @@ Virus.top30 = function() {
                         var date = new Date( item.time );
 
                         var row = "<tr>";
-                        row += "<td><a href=\"" + item.url + "\" target=\"_blank\">" + item.description + "</a></td>";
-                        row += "<td>" + item.name + " km</td>";
+                        row += "<td><a href=\"" + item.url + "\" target=\"_blank\">" + item.name + "</a></td>";
                         row += "<td>" + formatDate( item.time ) + "</td>";
                         row += "<td><a href=\"" + item.url + "\" target=\"_blank\">View</a></td>";
                         row += "</tr>";
