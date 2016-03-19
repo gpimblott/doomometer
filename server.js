@@ -9,9 +9,9 @@ var schedule = require('node-schedule');
 var keepalive = require('./keepalive');
 
 var stats = require('./db/overview');
-var earthquakes = require('./db/earthquakes');
-var virus = require('./db/virus.js');
-var disasters = require('./db/disasters.js');
+
+var feeds = require('./feeds/feeds.js');
+var cacheFiles = require('./db/cacheFiles.js');
 
 
 
@@ -106,6 +106,15 @@ var DoomApp = function () {
                 res.render('pages/disasters.ejs')
             });
 
+            self.app.get('/spaceweather' , function(req,res) {
+                res.render('pages/spaceweather.ejs')
+            });
+
+
+            self.app.get('/alerts' , function(req,res) {
+                res.render('pages/alerts.ejs')
+            });
+
             self.app.get('/ping' , function (req,res) {
                 console.log("ping");
                 res.send('pong');
@@ -144,18 +153,17 @@ var DoomApp = function () {
                 stats.refresh();
             });
 
-            var earthquakeJob = schedule.scheduleJob('*/30 * * * *', function(){
-                earthquakes.refresh();
+            var cacheFilesJob = schedule.scheduleJob('*/5 * * * *', function(){
+                cacheFiles.refresh();
             });
 
 
-            var virusJob = schedule.scheduleJob('*/30 * * * *', function(){
-                virus.refresh();
+            var feedsJob = schedule.scheduleJob('*/30 * * * *', function(){
+                feeds.refresh();
             });
 
-            var disasterJob = schedule.scheduleJob('*/30 * * * *', function(){
-                disasters.refresh();
-            });
+
+
 
         };
 
@@ -188,10 +196,8 @@ var DoomApp = function () {
 
 
         self.initData = function() {
-            earthquakes.refresh();
-            stats.refresh();
-            virus.refresh();
-            disasters.refresh();
+            feeds.refresh();
+            cacheFiles.refresh();
 
         }
 

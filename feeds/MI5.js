@@ -51,20 +51,30 @@ MI5.refresh = function() {
             }
 
             while (item = stream.read()) {
-                console.log(item);
+               // console.log(item);
 
                 var title = item.title;
-                var link = item.link;
-                var time = item.date;
+                var link = item["rss:link"]['#'];
                 var description = item.description;
-
+                var imagelink = item["rss:imagelink"]['#'];
                 var state = "UNKNOWN";
-                if (startsWith($description, "The current UK threat level is ")) {
-                    $state = substr($description, 31);
-                    $a = explode(" ", $state);
-                    $state = $a[0];
-                }
 
+                state = description.substr(31);
+                var word = state.split(' ');
+                state = word[0];
+
+
+                var post = {
+                    description: description, title: title, issuetime: meta.date,
+                    imageurl: imagelink, url: link, source : meta.generator,
+                    state: state };
+
+
+                query = connection.query('INSERT IGNORE INTO alertstates SET ?', post, function (err, result) {
+                    if (err) console.log(err);
+
+                   // console.log(result);
+                });
 
 
             }

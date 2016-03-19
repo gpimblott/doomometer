@@ -1,7 +1,0 @@
-<tr><td><a href="virus?date=2016-03-13">13-03-2016</a></td><td>7</td><td><a href="virus?date=2016-03-13">View</a></td></tr>
-<tr><td><a href="virus?date=2016-03-12">12-03-2016</a></td><td>23</td><td><a href="virus?date=2016-03-12">View</a></td></tr>
-<tr><td><a href="virus?date=2016-03-11">11-03-2016</a></td><td>53</td><td><a href="virus?date=2016-03-11">View</a></td></tr>
-<tr><td><a href="virus?date=2016-03-10">10-03-2016</a></td><td>33</td><td><a href="virus?date=2016-03-10">View</a></td></tr>
-<tr><td><a href="virus?date=2016-03-08">08-03-2016</a></td><td>10</td><td><a href="virus?date=2016-03-08">View</a></td></tr>
-<tr><td><a href="virus?date=2016-03-06">06-03-2016</a></td><td>10</td><td><a href="virus?date=2016-03-06">View</a></td></tr>
-<tr><td><a href="virus?date=2016-03-03">03-03-2016</a></td><td>2</td><td><a href="virus?date=2016-03-03">View</a></td></tr>

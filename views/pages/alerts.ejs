@@ -22,41 +22,7 @@
 				<div >
 					<h2>Alert states</h2>
 					
-						<?php
-						mysqli_data_seek($result, 0); 
-						while($row=mysqli_fetch_array($result)) {
-							
-							echo "<h3><a href=\"" 
-									. $row['url'] ."\" target=\"_blank\">"
-									. $row['source'] . " : " 
-									. $row['title'] . " : " 
-									. $row['state']. "</a></h3>";
-							echo "<p class='post-info'> Issued " . date("d-m-Y G:i" , strtotime($row['issuetime'])) . "</p>"; 
-							
-							if( !empty($row['imageurl'])) {
-								?>
-								
-								<table>
-									<tr><th>Description</th><th></th></tr>
-									<tr>
-										<td><?php echo $row['description'] ?></td> 
-										<td>
-											<a href="<?php echo $row['url'] ?>" target="_blank">
-												<img src=" <?php echo $row['imageurl'] ?>" alt="Threat state">
-											</a>
-										</td>
-									</tr>
-								</table>
-								
-								<?php
-							} else {
-								
-							}
-							
-										
-						}
-						?>
-				
+						<% include alerts.txt %>
 				</div>
 				
 			

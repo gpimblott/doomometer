@@ -1,0 +1,2 @@
+<tr><td><a href="spaceweather?date=2016-03-18">18-03-2016</a></td><td>7</td><td><a href="spaceweather?date=2016-03-18">View</a></td></tr>
+<tr><td><a href="spaceweather?date=2016-03-11">11-03-2016</a></td><td>5</td><td><a href="spaceweather?date=2016-03-11">View</a></td></tr>

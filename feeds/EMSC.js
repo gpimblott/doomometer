@@ -82,7 +82,7 @@ EMSC.refresh = function() {
                 };
 
 
-                query = connection.query('INSERT INTO earthquakes SET ?', post, function (err, result) {
+                query = connection.query('INSERT IGNORE INTO earthquakes SET ?', post, function (err, result) {
                     if (err) {
                         console.log(err);
                     }
