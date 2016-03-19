@@ -138,7 +138,7 @@ var DoomApp = function () {
 
             self.app.get('/updatecache', function (req,res) {
                 cacheFiles.refresh();
-                res.send("Feeds updated");
+                res.send("Cache  updated");
             })
 
         };

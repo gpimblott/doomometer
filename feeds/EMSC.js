@@ -65,7 +65,7 @@ EMSC.refresh = function() {
                 var lat = item["geo:lat"]['#'];
                 var lon = item["geo:long"]['#'];
 
-                var depth = item["emsc:depth"]['#'];
+                var depth = Math.abs(item["emsc:depth"]['#']);
                 var time = item["emsc:time"]['#'];
                 var magnitude = item["emsc:magnitude"]['#'];
                 var parts = magnitude.split(' ');

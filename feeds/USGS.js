@@ -61,7 +61,7 @@ USGS.refresh = function() {
                 var point = item["georss:point"]['#'];
                 var latlon = point.split(' ');
                 var elev = item["georss:elev"]['#'];
-                var depth = elev / 1000;
+                var depth = Math.abs(elev / 1000);
                 var location = title.substr(8);
                 var magnitude = title.substr(1, 6);
 
