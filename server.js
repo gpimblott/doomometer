@@ -90,9 +90,6 @@ var DoomApp = function () {
          */
         self.createRoutes = function () {
 
-            self.app.get('/', function (req, res) {
-                res.redirect("http://doom.pimblott.com");
-            });
 
             self.app.get('/earthquakes', function (req, res) {
                 res.render('pages/earthquakes.ejs')
@@ -124,8 +121,8 @@ var DoomApp = function () {
                 res.render('pages/about.ejs');
             })
 
-            self.app.get('/gp', function (req, res) {
-                res.render('pages/index2',
+            self.app.get('/', function (req, res) {
+                res.render('pages/index',
                     {   earthquakesToday : stats.earthquakesToday() ,
                         virusToday       : stats.virusToday(),
                         disastersToday   : stats.disastersToday(),
@@ -133,6 +130,16 @@ var DoomApp = function () {
                         averageMagnitude : stats.averageMagnitude(),
                         alertState       : stats.alertState() });
             });
+
+            self.app.get('/updatefeeds', function (req,res) {
+                feeds.refresh();
+                app.send("Feeds updated");
+            })
+
+            self.app.get('/updatecache', function (req,res) {
+                cacheFiles.refresh();
+                app.send("Feeds updated");
+            })
 
         };
 
@@ -161,10 +168,7 @@ var DoomApp = function () {
             var feedsJob = schedule.scheduleJob('*/30 * * * *', function(){
                 feeds.refresh();
             });
-
-
-
-
+            
         };
 
 
