@@ -133,12 +133,12 @@ var DoomApp = function () {
 
             self.app.get('/updatefeeds', function (req,res) {
                 feeds.refresh();
-                app.send("Feeds updated");
+                res.send("Feeds updated");
             })
 
             self.app.get('/updatecache', function (req,res) {
                 cacheFiles.refresh();
-                app.send("Feeds updated");
+                res.send("Feeds updated");
             })
 
         };
@@ -168,7 +168,7 @@ var DoomApp = function () {
             var feedsJob = schedule.scheduleJob('*/30 * * * *', function(){
                 feeds.refresh();
             });
-            
+
         };
 
 
