@@ -21,7 +21,7 @@ Alerts.summary = function() {
         conn.query('SELECT * FROM alertstates  ', function (err, rows) {
                 if (!err) {
 
-                    var path = "views/pages/alerts.txt";
+                    var path = "views/cache/alerts.txt";
                     var fileStream = fs.createWriteStream(path);
 
                     rows.forEach( function (item, index) {

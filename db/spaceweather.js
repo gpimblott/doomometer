@@ -23,7 +23,7 @@ SpaceWeather.today = function() {
         conn.query('SELECT message_type,name,issuetime,description from spaceweather_today_view', function (err, rows) {
                 if (!err) {
 
-                    var path = "views/pages/spaceweather_data.txt";
+                    var path = "views/cache/spaceweather_data.txt";
                     var fileStream = fs.createWriteStream(path);
 
                     rows.forEach( function (item, index) {
@@ -96,7 +96,7 @@ SpaceWeather.summary = function() {
         conn.query('SELECT * FROM spaceweather_summary_view ORDER BY date DESC limit 7', function (err, rows) {
                 if (!err) {
 
-                    var path = "views/pages/spaceweather_summary.txt";
+                    var path = "views/cache/spaceweather_summary.txt";
                     var fileStream = fs.createWriteStream(path);
 
                     rows.forEach( function (item, index) {
