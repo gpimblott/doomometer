@@ -25,6 +25,7 @@
   },
 
   "dependencies": {
+    "console-stamp" : "latest",
     "express": "latest",
     "express-session":"latest",
     "body-parser":"latest",

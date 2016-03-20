@@ -97,9 +97,11 @@ NOAA.refresh = function() {
                         + 'ON DUPLICATE KEY UPDATE id=VALUES(id), issuetime=VALUES(issuetime), description=VALUES(description),name=VALUES(name)',
                         post, function (err, result) {
 
-                            if (err) console.log(err);
+                            if (err) {
+                                console.log(err);
+                                console.log(query.sql);
+                            }
 
-                            // console.log(result);
                         });
 
 

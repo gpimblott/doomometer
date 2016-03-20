@@ -1,5 +1,7 @@
 #!/bin/env node
-//  OpenShift sample Node application
+//  Doomometer
+require('console-stamp')(console, '[ddd mmm dd HH:MM:ss]]');
+
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');

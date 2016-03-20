@@ -9,7 +9,7 @@ var CacheFiles = function () {};
 
 CacheFiles.refresh = function() {
 
-    console.log("Refreshing cache pages");
+    console.log(" *** Refreshing cache text files *** ");
 
     alerts.refresh();
     disasters.refresh();

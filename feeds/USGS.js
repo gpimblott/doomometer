@@ -64,7 +64,7 @@ USGS.refresh = function() {
                 var elev = item["georss:elev"]['#'];
                 var depth = Math.abs(elev / 1000);
                 var location = title.substr(8);
-                var magnitude = title.substr(1, 6);
+                var magnitude = title.substr(1, 5).trim();
 
 
                 var post = {
@@ -75,12 +75,13 @@ USGS.refresh = function() {
 
 
                 query = connection.query('INSERT IGNORE INTO earthquakes SET ?', post, function (err, result) {
-                    if (err) console.log(err);
+                    if (err) {
+                        console.log(err);
+                        console.log(query.sql);
+                    }
 
-                    //console.log(result);
                 });
 
-                //console.log(query.sql);
 
             }
 

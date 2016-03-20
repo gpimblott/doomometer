@@ -10,7 +10,7 @@ var Feeds = function () {};
 
 Feeds.refresh = function() {
 
-    console.log("Refreshing feeds");
+    console.log(" *** Refreshing feeds from remote sites *** ");
 
     mi5.refresh();
     emsc.refresh();

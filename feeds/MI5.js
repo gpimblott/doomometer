@@ -71,7 +71,10 @@ MI5.refresh = function() {
 
 
                 query = connection.query('INSERT IGNORE INTO alertstates SET ?', post, function (err, result) {
-                    if (err) console.log(err);
+                    if (err) {
+                        console.log(err);
+                        console.log(query.sql);
+                    }
 
                    // console.log(result);
                 });
