@@ -54,7 +54,7 @@ USGS.refresh = function() {
             }
 
             while (item = stream.read()) {
-                console.log(item);
+                //console.log(item);
 
                 var title = item.title;
                 var link = item.link;
