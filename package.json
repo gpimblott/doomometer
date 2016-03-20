@@ -34,7 +34,8 @@
     "node-mysql": "latest",
     "node-schedule" : "latest",
     "feedparser" : "latest",
-    "request" : "latest"
+    "request" : "latest",
+    "https" : "latest"
   },
   "devDependencies": {},
   "bundleDependencies": [],
