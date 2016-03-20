@@ -54,11 +54,10 @@ USGS.refresh = function() {
             }
 
             while (item = stream.read()) {
-                //console.log(item);
+                console.log(item);
 
                 var title = item.title;
                 var link = item.link;
-                var time = new Date(item.pubdate);
 
                 var point = item["georss:point"]['#'];
                 var latlon = point.split(' ');
@@ -68,8 +67,14 @@ USGS.refresh = function() {
                 var magnitude = title.substr(1, 5).trim();
 
 
+                // Extract the time from the description ???
+                var pos = item.description.indexOf("Time</dt><dd>");
+                var str2 = item.description.substr(pos+13);
+                var pos2 = str2.indexOf("</dd");
+                var actualTime = new Date( str2.substr(0, pos2));
+
                 var post = {
-                    description: title, latitude: latlon[0], longitude: latlon[1], time: time.toISOString(),
+                    description: title, latitude: latlon[0], longitude: latlon[1], time: actualTime.toISOString(),
                     event_type: 1, depth: depth, magnitude: magnitude, url: link,
                     location_name: location, name: location
                 };
@@ -85,7 +90,7 @@ USGS.refresh = function() {
 
                 });
 
-                //console.log( query.sql );
+                console.log( query.sql );
 
 
             }
@@ -97,4 +102,4 @@ USGS.refresh = function() {
 
 module.exports = USGS;
 
-//USGS.refresh();
+USGS.refresh();
