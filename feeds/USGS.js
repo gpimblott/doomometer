@@ -54,7 +54,7 @@ USGS.refresh = function() {
             }
 
             while (item = stream.read()) {
-                console.log(item);
+                //console.log(item);
 
                 var title = item.title;
                 var link = item.link;
@@ -90,7 +90,7 @@ USGS.refresh = function() {
 
                 });
 
-                console.log( query.sql );
+                //console.log( query.sql );
 
 
             }
@@ -102,4 +102,4 @@ USGS.refresh = function() {
 
 module.exports = USGS;
 
-USGS.refresh();
+//USGS.refresh();
