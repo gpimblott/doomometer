@@ -74,6 +74,7 @@ GDACS.refresh = function() {
                 var eventName = item["gdacs:eventname"]["#"];
 
                 if( undefined === eventName ) eventName = "";
+                if( undefined === country ) country = "Unknown";
 
                 var post = {
                     description: description,
