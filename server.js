@@ -124,6 +124,10 @@ var DoomApp = function () {
                 res.render('pages/about.ejs');
             })
 
+            self.app.get('/news' , function(req,res) {
+                res.render('pages/news.ejs');
+            })
+
             self.app.get('/', function (req, res) {
                 res.render('pages/index',
                     {   earthquakesToday : stats.earthquakesToday() ,
@@ -220,7 +224,7 @@ var DoomApp = function () {
         self.initData = function() {
             feeds.refresh();
             cacheFiles.refresh();
-
+            bbc.refresh();
         }
 
         /**

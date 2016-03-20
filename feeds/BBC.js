@@ -33,9 +33,6 @@ BBC.refresh = function () {
     feedparser.on('end', function (error) {
         data = data + "]}";
 
-        console.log(data);
-        console.log("finished reading");
-
         uclassify.performRequest(data, BBC.updateDatabase);
     });
 

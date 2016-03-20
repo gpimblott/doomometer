@@ -14,44 +14,38 @@ USGS.refresh = function () {
 
     var req = request("http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.atom");
 
-
     var feedparser = new FeedParser();
+    var records = [];
 
     req.on('error', function (error) {
-        // handle any request errors
+        console.log(error);
     });
+
     req.on('response', function (res) {
         var stream = this;
 
         if (res.statusCode != 200) return this.emit('error', new Error('Bad status code'));
 
+        records.length=0;
         stream.pipe(feedparser);
     });
 
 
-    feedparser.on('error', function (error) {
-        // always handle errors
+    feedparser.on('end', function (error) {
+        console.log("Updating USGS earthquakes");
+        USGS.updateDatabase(records);
     });
+
+    feedparser.on('error', function (error) {
+        console.log(error);
+    });
+
     feedparser.on('readable', function () {
         // This is where the action is!
         var stream = this
             , meta = this.meta // **NOTE** the "meta" is always available in the context of the feedparser instance
             , item;
 
-
-        var connection = mysql.createConnection({
-            host: config.mysql.host,
-            user: config.mysql.username,
-            password: config.mysql.password,
-            database: config.mysql.dbname,
-            port: config.mysql.port,
-        });
-
-        connection.connect(function (err) {
-            if (err) {
-                console.error('error connecting: ' + err.stack);
-                return;
-            }
 
             while (item = stream.read()) {
                 // console.log(item);
@@ -73,31 +67,62 @@ USGS.refresh = function () {
                 var pos2 = str2.indexOf("</dd");
                 var actualTime = new Date(str2.substr(0, pos2));
 
-                var post = {
-                    description: title, latitude: latlon[0], longitude: latlon[1], time: actualTime.toISOString(),
-                    event_type: 1, depth: depth, magnitude: magnitude, url: link,
-                    location_name: location, name: location
-                };
+                if(isNaN(depth)) depth=0.0;
 
-                var t = function () {
-                    var kCopy = query = connection.query('INSERT IGNORE INTO earthquakes SET ?', post, function (err, result) {
-                        if (err) {
-                            console.log(err);
-                            console.log(kCopy.sql);
-                        }
+                var record = [];
+                record.push(title);
+                record.push(latlon[0]);
+                record.push(latlon[1]);
+                record.push(actualTime.toISOString());
+                record.push(1);
+                record.push(depth);
+                record.push(magnitude);
+                record.push(link);
+                record.push(location);
+                record.push(location);
 
-                    });
-                };
-
-                t();
-
-
-
+                records.push(record);
             }
 
-            connection.end();
-        });
     });
+}
+
+USGS.updateDatabase = function (records) {
+
+    //console.log(records);
+
+    var connection = mysql.createConnection({
+        host: config.mysql.host,
+        user: config.mysql.username,
+        password: config.mysql.password,
+        database: config.mysql.dbname,
+        port: config.mysql.port,
+    });
+
+
+    connection.connect(function (err) {
+        if (err) {
+            console.error('error connecting: ' + err.stack);
+            return;
+        }
+
+
+        query = connection.query("INSERT IGNORE INTO earthquakes " +
+            "(description,latitude,longitude,time,event_type,depth,magnitude,url,location_name,name) VALUES ?",[records],
+            function (err, result ) {
+
+                if (err) {
+                    console.log(err);
+                    console.log(query.sql);
+                } else {
+                    console.log(result);
+                }
+                records.length=0;
+                connection.end();
+
+            });
+
+    })
 }
 
 module.exports = USGS;
