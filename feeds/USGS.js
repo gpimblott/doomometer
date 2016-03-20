@@ -1,4 +1,4 @@
-var mysql  = require('mysql');
+var mysql = require('mysql');
 var config = require('../config/db');
 var datetime = require('../utils/DateTime.js');
 
@@ -6,11 +6,11 @@ var FeedParser = require('feedparser');
 var request = require('request');
 
 
-var USGS = function () {};
+var USGS = function () {
+};
 
 
-
-USGS.refresh = function() {
+USGS.refresh = function () {
 
     var req = request("http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.atom");
 
@@ -54,7 +54,7 @@ USGS.refresh = function() {
             }
 
             while (item = stream.read()) {
-                //console.log(item);
+                // console.log(item);
 
                 var title = item.title;
                 var link = item.link;
@@ -69,9 +69,9 @@ USGS.refresh = function() {
 
                 // Extract the time from the description ???
                 var pos = item.description.indexOf("Time</dt><dd>");
-                var str2 = item.description.substr(pos+13);
+                var str2 = item.description.substr(pos + 13);
                 var pos2 = str2.indexOf("</dd");
-                var actualTime = new Date( str2.substr(0, pos2));
+                var actualTime = new Date(str2.substr(0, pos2));
 
                 var post = {
                     description: title, latitude: latlon[0], longitude: latlon[1], time: actualTime.toISOString(),
@@ -79,18 +79,18 @@ USGS.refresh = function() {
                     location_name: location, name: location
                 };
 
+                var t = function () {
+                    var kCopy = query = connection.query('INSERT IGNORE INTO earthquakes SET ?', post, function (err, result) {
+                        if (err) {
+                            console.log(err);
+                            console.log(kCopy.sql);
+                        }
 
-                query = connection.query('INSERT IGNORE INTO earthquakes SET ?', post, function (err, result ) {
-                    if (err) {
-                        console.log(err);
-                        console.log(query.sql);
-                    } else {
-                       // console.log( query.sql );
-                    }
+                    });
+                };
 
-                });
+                t();
 
-                //console.log( query.sql );
 
 
             }
@@ -101,5 +101,3 @@ USGS.refresh = function() {
 }
 
 module.exports = USGS;
-
-//USGS.refresh();
