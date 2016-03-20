@@ -41,14 +41,14 @@ OverviewStats.alertState = function() {
  *
  */
 OverviewStats.refresh = function () {
-    console.log("Updating overview stats");
+    console.log(" ** Updating overview stats ** ");
     dbpool.getConnection(function (err, conn) {
         conn.query('SELECT count(*) as num from spaceweather_today_view', function (err, rows) {
                 if (!err) {
                     if( rows.length != 0) {
                         spaceWeatherToday = rows[0].num;
 
-                        console.log('Space weather: ', spaceWeatherToday);
+                        console.log(' * Space weather: ', spaceWeatherToday);
                     }
                 }
                 else {
@@ -66,7 +66,7 @@ OverviewStats.refresh = function () {
                     if( rows.length !=0 ) {
                         earthquakesToday = rows[0].num;
 
-                        console.log('Earthquakes: ', earthquakesToday);
+                        console.log(' * Earthquakes: ', earthquakesToday);
                     }
                 }
                 else {
@@ -83,7 +83,7 @@ OverviewStats.refresh = function () {
                     if( rows.length != 0) {
                         virusToday = rows[0].num;
 
-                        console.log('Virus: ', virusToday);
+                        console.log(' * Virus: ', virusToday);
                     }
                 }
                 else {
@@ -101,7 +101,7 @@ OverviewStats.refresh = function () {
                     if( rows.length != 0) {
                         disastersToday = rows[0].num;
 
-                        console.log('Disaster: ', disastersToday);
+                        console.log(' * Disaster: ', disastersToday);
                     }
                 }
                 else {
@@ -118,7 +118,7 @@ OverviewStats.refresh = function () {
                     if( rows.length != 0 ) {
                         averageMagnitude = rows[0].avg;
 
-                        console.log('Magnitude average: ', averageMagnitude);
+                        console.log(' * Magnitude average: ', averageMagnitude);
                     }
                 }
                 else {
@@ -136,7 +136,7 @@ OverviewStats.refresh = function () {
                     if( rows.length != 0 ) {
                         alertState = rows[0].state;
 
-                        console.log('Alert State: ', alertState);
+                        console.log(' * Alert State: ', alertState);
                     }
                 }
                 else {

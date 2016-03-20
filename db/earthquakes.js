@@ -27,6 +27,7 @@ Earthquakes.today = function() {
                     var path = "views/cache/earthquake_data.txt";
                     var fileStream = fs.createWriteStream(path);
 
+                    fileStream.write("// Created : " + new Date().toISOString() + "\n")
 
                     rows.forEach( function (item, index) {
 
@@ -79,6 +80,10 @@ Earthquakes.top30 = function() {
                     var path = "views/cache/earthquake_top30.txt";
                     var fileStream = fs.createWriteStream(path);
 
+
+                    fileStream.write("<!-- " + new Date().toISOString() + "-->\n")
+
+
                     rows.forEach( function (item, index) {
 
                         var date = new Date( item.time );
@@ -117,6 +122,8 @@ Earthquakes.summary = function() {
 
                     var path = "views/cache/earthquake_summary.txt";
                     var fileStream = fs.createWriteStream(path);
+
+                    fileStream.write("<!-- " + new Date().toISOString() + "-->\n")
 
                     rows.forEach( function (item, index) {
 
