@@ -85,7 +85,7 @@ USGS.refresh = function() {
 
                 });
 
-                //console.log( query.sql );
+                console.log( query.sql );
 
 
             }
