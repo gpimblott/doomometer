@@ -66,14 +66,14 @@ EMSC.refresh = function() {
                 var lon = item["geo:long"]['#'];
 
                 var depth = Math.abs(item["emsc:depth"]['#']);
-                var time = item["emsc:time"]['#'];
+                var time = new Date( item["emsc:time"]['#']);
                 var magnitude = item["emsc:magnitude"]['#'];
                 var parts = magnitude.split(' ');
                 var location = title.substr(8);
 
 
                 var post = {
-                    description: title, latitude: lat, longitude: lon, time: time,
+                    description: title, latitude: lat, longitude: lon, time: time.toISOString(),
                     event_type: 1, depth: depth, magnitude: parts[1], url: link,
                     location_name: location, name: location
                 };
