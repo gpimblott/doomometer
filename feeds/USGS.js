@@ -58,7 +58,7 @@ USGS.refresh = function() {
 
                 var title = item.title;
                 var link = item.link;
-                var time = new Date(meta.pubdate);
+                var time = new Date(item.pubdate);
 
                 var point = item["georss:point"]['#'];
                 var latlon = point.split(' ');
@@ -85,7 +85,7 @@ USGS.refresh = function() {
 
                 });
 
-                console.log( query.sql );
+                //console.log( query.sql );
 
 
             }
