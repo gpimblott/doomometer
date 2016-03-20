@@ -65,7 +65,7 @@ MI5.refresh = function() {
 
 
                 var post = {
-                    description: description, title: title, issuetime: meta.date,
+                    description: description, title: title, issuetime: meta.date.toISOString(),
                     imageurl: imagelink, url: link, source : meta.generator,
                     state: state };
 

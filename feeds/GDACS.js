@@ -59,12 +59,12 @@ GDACS.refresh = function() {
                // console.log(item);
 
                 var title = item.title;
-                var pubDate = item.pubdate;
+                var pubDate = new Date(item.pubdate);
                 var link = item.link;
                 var description = item.description;
                 var alertLevel = item["gdacs:alertlevel"]['#'];
-                var fromDate = formatDate( item["gdacs:fromdate"]['#']);
-                var toDate = formatDate( item["gdacs:todate"]['#'] );
+                var fromDate = new Date( item["gdacs:fromdate"]['#']);
+                var toDate = new Date( item["gdacs:todate"]['#'] );
                 var eventType = item["gdacs:eventtype"]['#'];
                 var country = item["gdacs:country"]['#'];
                 var severity = item["gdacs:severity"]['#'];
@@ -82,12 +82,12 @@ GDACS.refresh = function() {
                     longitude:lon,
                     location_name:country,
                     name:title,
-                    time:pubDate,
+                    time:pubDate.toISOString(),
                     url:link,
                     event_type:2,
                     alert_level:alertLevel,
-                    fromdate:fromDate,
-                    todate:toDate,
+                    fromdate:fromDate.toISOString(),
+                    todate:toDate.toISOString(),
                     disaster_type:eventType ,
                     severity: severity,
                     type: eventName};
@@ -99,9 +99,9 @@ GDACS.refresh = function() {
                         console.log(query.sql);
                     }
 
+
+
                 });
-
-
             }
 
             connection.end();

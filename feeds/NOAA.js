@@ -47,7 +47,7 @@ NOAA.refresh = function() {
                     var messageCodeId = "";
                     var serialNumber = "";
                     var alert = "";
-                    var issueTime = "";
+                    var issueTime;
                     var text = report.message;
 
                     report.message.split("\r\n").forEach(function (line) {
@@ -69,7 +69,7 @@ NOAA.refresh = function() {
                             } else if (tag === "Serial Number") {
                                 serialNumber = value;
                             } else if (tag == "Issue Time") {
-                                issueTime = formatDate(value);
+                                issueTime = new Date(value);
                             } else if (tag === "ALERT") {
                                 alert = value;
                             } else if (tag === "WARNING") {
@@ -82,6 +82,11 @@ NOAA.refresh = function() {
                         }
                     });
 
+                    if(issueTime===undefined) {
+                        issueTime = "";
+                    } else {
+                        issueTime = issueTime.toISOString();
+                    }
 
                     var post = {
                         id: serialNumber,

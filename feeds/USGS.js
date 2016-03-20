@@ -1,5 +1,6 @@
 var mysql  = require('mysql');
 var config = require('../config/db');
+var datetime = require('../utils/DateTime.js');
 
 var FeedParser = require('feedparser');
 var request = require('request');
@@ -57,7 +58,7 @@ USGS.refresh = function() {
 
                 var title = item.title;
                 var link = item.link;
-                var time = item.pubdate;
+                var time = new Date(item.pubdate);
 
                 var point = item["georss:point"]['#'];
                 var latlon = point.split(' ');
@@ -68,16 +69,18 @@ USGS.refresh = function() {
 
 
                 var post = {
-                    description: title, latitude: latlon[0], longitude: latlon[1], time: time,
+                    description: title, latitude: latlon[0], longitude: latlon[1], time: time.toISOString(),
                     event_type: 1, depth: depth, magnitude: magnitude, url: link,
                     location_name: location, name: location
                 };
 
 
-                query = connection.query('INSERT IGNORE INTO earthquakes SET ?', post, function (err, result) {
+                query = connection.query('INSERT IGNORE INTO earthquakes SET ?', post, function (err, result ) {
                     if (err) {
                         console.log(err);
                         console.log(query.sql);
+                    } else {
+                       // console.log( query.sql );
                     }
 
                 });

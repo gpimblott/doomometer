@@ -57,11 +57,11 @@ Sophos.refresh = function() {
 
                 var title = item.title;
                 var link = item.link;
-                var pubDate =  item.pubdate;
+                var pubDate =  new Date(item.pubdate);
 
 
                 var post = {
-                    name: title, time: pubDate, url: link };
+                    name: title, time: pubDate.toISOString(), url: link };
 
 
                 query = connection.query('INSERT IGNORE INTO virus SET ?', post, function (err, result) {
