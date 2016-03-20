@@ -15,6 +15,8 @@ var stats = require('./db/overview');
 var feeds = require('./feeds/feeds.js');
 var cacheFiles = require('./db/cacheFiles.js');
 
+var bbc = require('./feeds/BBC/js');
+
 
 
 /**
@@ -178,6 +180,10 @@ var DoomApp = function () {
 
             var feedsJob = schedule.scheduleJob('*/30 * * * *', function(){
                 feeds.refresh();
+            });
+
+            var bbcJob = schedule.scheduleJob('0 */3 * * *', function(){
+                bbc.refresh();
             });
 
         };
