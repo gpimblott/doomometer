@@ -15,7 +15,7 @@ var stats = require('./db/overview');
 var feeds = require('./feeds/feeds.js');
 var cacheFiles = require('./db/cacheFiles.js');
 
-var bbc = require('./feeds/BBC/js');
+var bbc = require('./feeds/BBC.js');
 
 
 
