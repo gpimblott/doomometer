@@ -11,7 +11,6 @@ Keepalive.ping = function () {
         path: '/ping',
         agent: false  }, function(req,res) {
 
-        console.log("Pinged server");
     });
 
 };
