@@ -200,6 +200,7 @@ var DoomApp = function () {
             }));
 
             self.app.use(session({secret: 'mysecretkeyforthiscookie'}));
+            self.app.set('view cache', false);
 
             self.createCronJobs();
             self.createRoutes();
