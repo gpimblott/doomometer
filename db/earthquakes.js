@@ -84,7 +84,7 @@ Earthquakes.top30 = function() {
                     fileStream.write("<!-- " + new Date().toISOString() + "-->\n")
 
                     fileStream.write("<p> Strongest 20 earthquakes in the last 24 hrs </p>");
-                    fileStream.write("<p><i> " + new Date().toISOString() + " </i></p>");
+                    fileStream.write("<p><i> Generated " + new Date().toISOString() + " </i></p>");
                     fileStream.write(" <table>" );
                     fileStream.write("<tr>");
                     fileStream.write("<th>Description</th><th>Depth</th><th>Time</th><th></th>");
@@ -131,6 +131,8 @@ Earthquakes.summary = function() {
                     var fileStream = fs.createWriteStream(path);
 
                     fileStream.write("<!-- " + new Date().toISOString() + "-->\n")
+                    fileStream.write("<table><tr>");
+                    fileStream.write("<tr><th>Date</th><th>Total earthquakes</th><th>Average Magnitude</th></tr>");
 
                     rows.forEach( function (item, index) {
 
@@ -145,6 +147,8 @@ Earthquakes.summary = function() {
 
                     } );
 
+                    fileStream.write("</table>");
+                    fileStream.write("<p><i>Generated " + new Date().toISOString() + "</i></p>")
                     fileStream.end();
 
                 }

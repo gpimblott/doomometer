@@ -1,1 +1,0 @@
-The files in the directory are automatically generated and should not be placed in source control
