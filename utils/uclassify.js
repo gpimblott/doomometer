@@ -38,7 +38,6 @@ uclassify.performRequest = function (data, success) {
         });
 
         res.on('end', function () {
-            console.log(responseString);
             var responseObject = JSON.parse(responseString);
             success(responseObject);
         });
