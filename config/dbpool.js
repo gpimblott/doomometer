@@ -10,7 +10,8 @@ var pool = mysql.createPool({
     password : config.mysql.password,
     database : config.mysql.dbname,
     port     : config.mysql.port,
-    debug    :  false
+    debug    :  false,
+    timezone : 'utc'
 });
 
 Database.getConnection = function(callback) {

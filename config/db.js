@@ -6,7 +6,8 @@ module.exports = {
 		'password'  : process.env.OPENSHIFT_MYSQL_DB_PASSWORD || 'paI-zSrdy52T',
 		'host'   	: process.env.OPENSHIFT_MYSQL_DB_HOST || 'localhost',
 		'port'   	: process.env.OPENSHIFT_MYSQL_DB_PORT || 3306,
-		'dbname' 	: 'doomometer'
+		'dbname' 	: 'doomometer',
+		'timezone'  : 'utc'  
 	}
 
 };
