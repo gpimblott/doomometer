@@ -73,6 +73,7 @@ GDACS.refresh = function() {
               //  var pictureURL = item["rss:enclosure"]['url'];
                 var eventName = item["gdacs:eventname"]["#"];
 
+                if( undefined === eventName ) eventName = "";
 
                 var post = {
                     description: description,
