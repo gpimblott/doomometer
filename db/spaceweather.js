@@ -1,5 +1,6 @@
 var fs = require("fs");
 var dbpool = require('../config/dbpool');
+var dateutil = require('../utils/DateTime.js');
 
 
 
@@ -103,9 +104,9 @@ SpaceWeather.summary = function() {
 
 
                         var row = "<tr>";
-                        row += "<td><a href=\"spaceweather?date=" + formatLinkDate(item.date) + "\">" + formatSummaryDate(item.date) + "</a></td>";
+                        row += "<td><a href=\"spaceweather?date=" + dateutil.formatLinkDate(item.date) + "\">" + dateutil.DDMMYY(item.date) + "</a></td>";
                         row += "<td>" + item.count + "</td>";
-                        row += "<td><a href=\"spaceweather?date=" + formatLinkDate(item.date) + "\">View</a></td>";
+                        row += "<td><a href=\"spaceweather?date=" + dateutil.formatLinkDate(item.date) + "\">View</a></td>";
                         row += "</tr>";
 
                         fileStream.write( row + "\n");
@@ -122,31 +123,6 @@ SpaceWeather.summary = function() {
             }
         )
     });
-}
-
-
-function formatSummaryDate(d) {
-
-    var year = d.getFullYear();
-    var month = d.getMonth()+1;
-    var day = d.getDate();
-
-    if( month < 10 ) month = '0' + month;
-    if( day < 10 ) day = '0' + day;
-
-    return day + "-" + month + "-" + year;
-}
-
-function formatLinkDate(d) {
-
-    var year = d.getFullYear();
-    var month = d.getMonth()+1;
-    var day = d.getDate();
-
-    if( month < 10 ) month = '0' + month;
-    if( day < 10 ) day = '0' + day;
-
-    return year + "-" + month + "-" + day;
 }
 
 module.exports = SpaceWeather;
