@@ -109,13 +109,6 @@ BBC.updateDatabase = function (response) {
     positive = (positive/numReports * 100).toFixed(1);
 
 
-    console.log("Num neg : " + numnegative);
-    console.log("Num pos : " + numpositive);
-    console.log("Negative % =" + negative);
-    console.log("Positive % =" + positive);
-    console.log("Reports = " + response.length);
-
-
     var connection = mysql.createConnection({
         host: config.mysql.host,
         user: config.mysql.username,

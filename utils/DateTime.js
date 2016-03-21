@@ -2,8 +2,20 @@ var DateTime = function () {};
 
 
 
+DateTime.DDMM_Time = function (d) {
 
-DateTime.formatDate = function (d) {
+    var month = d.getUTCMonth()+1;
+    var day = d.getUTCDate()
+    var hrs = d.getUTCHours();
+    var minute = d.getUTCMinutes();
+
+    if( hrs < 10 ) hrs = '0' + hrs;
+    if( minute < 10) minute = '0' + minute;
+
+    return day + "/" + month  + "  " + hrs + ":" + minute;
+}
+
+DateTime.DDMMYY_Time = function (d) {
 
     var year = d.getFullYear();
     var month = d.getUTCMonth()+1;
@@ -17,7 +29,7 @@ DateTime.formatDate = function (d) {
     return day + "/" + month + "/" + year + "  " + hrs + ":" + minute + " UTC";
 }
 
-DateTime.formatSummaryDate = function (d) {
+DateTime.DDMMYY = function (d) {
 
     var year = d.getFullYear();
     var month = d.getUTCMonth()+1;

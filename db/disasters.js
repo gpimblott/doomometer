@@ -8,12 +8,12 @@ var Disasters = function () {};
 
 Disasters.refresh = function() {
     console.log("Disasters refresh");
-    Disasters.today();
+    Disasters.openmapPoints();
     Disasters.summary();
-    Disasters.top30();
+    Disasters.todayTable();
 }
 
-Disasters.today = function() {
+Disasters.openmapPoints = function() {
     /**
      * Create the list of earthquakes for the front page
      */
@@ -53,7 +53,7 @@ Disasters.today = function() {
 
 }
 
-Disasters.top30 = function() {
+Disasters.todayTable = function() {
     /**
      * Create the list of virus' for the front page
      */
@@ -71,8 +71,8 @@ Disasters.top30 = function() {
                     rows.forEach( function (item, index) {
 
                         var row = "<h3><a href=\"" + item.url + "\" target=\"_blank\">" + item.name + "</a></h3>";
-                        row += "<p class='post-info'>From " + dateutil.formatDate(item.fromdate) +
-                            " to " + dateutil.formatDate(item.todate) + "</p>";
+                        row += "<p class='post-info'>From " + dateutil.DDMMYY_Time(item.fromdate) +
+                            " to " + dateutil.DDMMYY_Time(item.todate) + "</p>";
                         row += "<p>" + item.description + "</p>";
 
 
@@ -109,7 +109,7 @@ Disasters.summary = function() {
 
 
                         var row = "<tr>";
-                        row += "<td><a href=\"disasters?date=" + dateutil.formatLinkDate(item.date) + "\">" + dateutil.formatSummaryDate(item.date) + "</a></td>";
+                        row += "<td><a href=\"disasters?date=" + dateutil.formatLinkDate(item.date) + "\">" + dateutil.DDMMYY(item.date) + "</a></td>";
                         row += "<td>" + item.count + "</td>";
                         row += "<td><a href=\"disasters?date=" + dateutil.formatLinkDate(item.date) + "\">View</a></td>";
                         row += "</tr>";
