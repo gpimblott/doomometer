@@ -217,6 +217,8 @@ var DoomApp = function () {
             self.app.use(session({secret: 'mysecretkeyforthiscookie'}));
             self.app.set('view cache', false);
 
+            process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
             self.createCronJobs();
             self.createRoutes();
 

@@ -65,17 +65,5 @@ Alerts.summary = function() {
 }
 
 
-function formatDate(d) {
-
-    var hrs = d.getUTCHours();
-    var minute = d.getUTCMinutes();
-
-    if( hrs < 10 ) hrs = '0' + hrs;
-    if( minute < 10) minute = '0' + minute;
-
-    return hrs + ":" + minute + " UTC";
-}
-
-
 
 module.exports = Alerts;
