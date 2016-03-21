@@ -8,11 +8,11 @@ var Virus = function () {};
 Virus.refresh = function() {
     console.log("Virus refresh");
     Virus.summary();
-    Virus.top30();
+    Virus.todayTable();
 }
 
 
-Virus.top30 = function() {
+Virus.todayTable = function() {
     /**
      * Create the list of virus' for the front page
      */

@@ -9,12 +9,12 @@ var SpaceWeather = function () {};
 SpaceWeather.refresh = function() {
     console.log("Space weather refresh");
     SpaceWeather.summary();
-    SpaceWeather.today();
+    SpaceWeather.openmapPoints();
 }
 
 
 
-SpaceWeather.today = function() {
+SpaceWeather.openmapPoints = function() {
     /**
      * Create the list of space weather for the front page
      */

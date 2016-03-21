@@ -9,12 +9,12 @@ Earthquakes.refresh = function() {
     console.log("Earthquakes refresh");
 
 
-    Earthquakes.today();
-    Earthquakes.top30();
+    Earthquakes.openmapPoints();
+    Earthquakes.todayTable();
     Earthquakes.summary();
 }
 
-Earthquakes.today = function() {
+Earthquakes.openmapPoints = function() {
 
     /**
      * Create the list of earthquakes for the front page
@@ -68,7 +68,7 @@ Earthquakes.today = function() {
 
 }
 
-Earthquakes.top30 = function() {
+Earthquakes.todayTable = function() {
     /**
      * Create the list of earthquakes for the front page
      */
@@ -97,7 +97,7 @@ Earthquakes.top30 = function() {
                         var row = "<tr>";
                         row += "<td><a href=\"" + item.url + "\" target=\"_blank\">" + item.description + "</a></td>";
                         row += "<td>" + item.depth + " km</td>";
-                        row += "<td>" + datetime.formatDate( item.time ) + "</td>";
+                        row += "<td>" + datetime.DDMM_Time( item.time ) + "</td>";
                         row += "<td><a href=\"" + item.url + "\" target=\"_blank\">View</a></td>";
                         row += "</tr>";
 
@@ -138,7 +138,7 @@ Earthquakes.summary = function() {
                     rows.forEach( function (item, index) {
 
                         var row = "<tr>";
-                        row += "<td><a href=\"earthquakes?date=" + datetime.formatLinkDate(item.date) + "\">" + datetime.formatSummaryDate(item.date) + "</a></td>";
+                        row += "<td><a href=\"earthquakes?date=" + datetime.formatLinkDate(item.date) + "\">" + datetime.DDMMYY(item.date) + "</a></td>";
                         row += "<td>" + item.count + "</td>";
                         row += "<td>" + item.average.toFixed(2) + "</td>";
                         row += "<td><a href=\"earthquakes?date=" + datetime.formatLinkDate(item.date) + "\">View</a></td>";
