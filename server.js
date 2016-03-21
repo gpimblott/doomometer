@@ -191,9 +191,9 @@ var DoomApp = function () {
                 feeds.refresh();
             });
 
-            //var bbcJob = schedule.scheduleJob('0 */3 * * *', function(){
-            //    bbc.refresh();
-            //});
+            var bbcJob = schedule.scheduleJob('0 */3 * * *', function(){
+                bbc.refresh();
+            });
 
         };
 
@@ -231,7 +231,7 @@ var DoomApp = function () {
         self.initData = function() {
             feeds.refresh();
             cacheFiles.refresh();
-            //bbc.refresh();
+            bbc.refresh();
         }
 
         /**
