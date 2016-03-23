@@ -1271,7 +1271,7 @@ if (typeof jQuery === 'undefined') {
     this.$element   = null;
     this.inState    = null;
 
-    this.init('tooltip', element, options)
+    this.refreshCachedData('tooltip', element, options)
   };
 
   Tooltip.VERSION  = '3.3.6';
@@ -1294,7 +1294,7 @@ if (typeof jQuery === 'undefined') {
     }
   };
 
-  Tooltip.prototype.init = function (type, element, options) {
+  Tooltip.prototype.refreshCachedData = function (type, element, options) {
     this.enabled   = true;
     this.type      = type;
     this.$element  = $(element);
@@ -1777,7 +1777,7 @@ if (typeof jQuery === 'undefined') {
   // ===============================
 
   var Popover = function (element, options) {
-    this.init('popover', element, options)
+    this.refreshCachedData('popover', element, options)
   };
 
   if (!$.fn.tooltip) throw new Error('Popover requires tooltip.js');

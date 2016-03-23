@@ -1,86 +1,21 @@
-var fs = require("fs");
 var dbpool = require('../config/dbpool');
-var dateutil = require('../utils/DateTime.js');
 
 
-
-var SpaceWeather = function () {};
-
-
-SpaceWeather.refresh = function() {
-    console.log("Space weather refresh");
-    SpaceWeather.summary();
-    SpaceWeather.openmapPoints();
-}
+var SpaceWeather = function () {
+};
 
 
-
-SpaceWeather.openmapPoints = function() {
+SpaceWeather.getForToday = function (done) {
     /**
      * Create the list of space weather for the front page
      */
     dbpool.getConnection(function (err, conn) {
 
         conn.query('SELECT message_type,name,issuetime,description from spaceweather_today_view', function (err, rows) {
-                if (!err) {
-
-                    var path = "views/cache/spaceweather_data.txt";
-                    var fileStream = fs.createWriteStream(path);
-
-                    rows.forEach( function (item, index) {
-
-                        var data = "<h3>";
-
-
-                        if (item.message_type === "ALT") {
-                            data += "<font color=\"Crimson\">Alert : ";
-                        } else if (item.message_type === "WAR") {
-                            data += "<font color=\"SandyBrown\"> Warning : ";
-                        } else if (item.message_type === "SUM") {
-                            data += "<font color=\"Yellow\"> Summary : ";
-                        } else if (item.message_type === "WAT") {
-                            data += "<font color=\"Yellow\"> Watch : ";
-                        } else {
-                            data += "<font color=\"Green\">";
-                        }
-                        data += item.name + "</font></h3>";
-
-                        data += "<p class='post-info'> Issued " + item.issuetime + "</p>";
-
-                        data += "<p><table><tr><th>Title</th><th>Information</th></tr>";
-
-                        item.description.split("\r\n").forEach( function( line) {
-
-
-                            var parts = line.split(":");
-                            if( undefined != parts[0] && undefined !=parts[1]) {
-                                data += "<tr>";
-                                data += "<td>";
-                                data += parts[0];
-                                data += "</td>";
-                                data += "<td>";
-                                data += parts[1];
-                                data += "</td>";
-                                data += "</tr>";
-                            }
-
-
-                        })
-
-
-                        data += "</table></p>";
-
-
-                        fileStream.write( data + "\n");
-
-                    } );
-
-                    fileStream.end();
-
-                }
-                else {
+                if (err) {
                     console.log('Error while performing Query.');
                 }
+                done(rows);
                 conn.release();
             }
         )
@@ -88,37 +23,36 @@ SpaceWeather.openmapPoints = function() {
 }
 
 
-SpaceWeather.summary = function() {
+SpaceWeather.getForDate = function (d , done) {
+    /**
+     * Create the list of space weather for the front page
+     */
+    dbpool.getConnection(function (err, conn) {
+
+        conn.query("SELECT message_type,name,issuetime,description from spaceweather where date(issuetime)='" +
+                            d + "' order by issuetime desc", function (err, rows) {
+                if (err) {
+                    console.log('Error while performing Query.');
+                }
+                done(rows);
+                conn.release();
+            }
+        )
+    });
+}
+
+
+SpaceWeather.getSummary = function (done) {
     /**
      * Create the list of virus for the front page
      */
     dbpool.getConnection(function (err, conn) {
 
         conn.query('SELECT * FROM spaceweather_summary_view ORDER BY date DESC limit 7', function (err, rows) {
-                if (!err) {
-
-                    var path = "views/cache/spaceweather_summary.txt";
-                    var fileStream = fs.createWriteStream(path);
-
-                    rows.forEach( function (item, index) {
-
-
-                        var row = "<tr>";
-                        row += "<td><a href=\"spaceweather?date=" + dateutil.formatLinkDate(item.date) + "\">" + dateutil.DDMMYY(item.date) + "</a></td>";
-                        row += "<td>" + item.count + "</td>";
-                        row += "<td><a href=\"spaceweather?date=" + dateutil.formatLinkDate(item.date) + "\">View</a></td>";
-                        row += "</tr>";
-
-                        fileStream.write( row + "\n");
-
-                    } );
-
-                    fileStream.end();
-
-                }
-                else {
+                if (err) {
                     console.log('Error while performing Query.');
                 }
+                done(rows);
                 conn.release();
             }
         )

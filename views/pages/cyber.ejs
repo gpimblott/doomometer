@@ -1,49 +1,73 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN">
 
 <html>
-	<head>
+<head>
 
-		<title>Doomometer - Cyber</title>
+    <title>Doomometer - Cyber</title>
 
-		<% include ../partials/head.ejs%>
+    <% include ../partials/head.ejs %>
 
-	</head>
+</head>
 
-	<body>
-		<div id="wrap">
+<body>
+<div id="wrap">
 
-			<% include ../partials/header.ejs %>
+    <% include ../partials/header.ejs %>
 
-			<!-- content-wrap starts -->
-			<div id="content-wrap">
-				<div id="main">
-					<h2>Viruses detected today</h2>
+    <!-- content-wrap starts -->
+    <div id="content-wrap">
+        <div id="main">
+            <h2>Viruses detected today</h2>
 
 
-					<table width='400'>
-						<tr>
-							<th>Name</th><th>Time</th><th></th>
-						</tr>
-						<% include ../cache/virus_top30.txt %>
-					</table>
+            <table width='400'>
+                <tr>
+                    <th>Name</th>
+                    <th>Time</th>
+                    <th></th>
+                </tr>
 
-				</div>
-				<div id="sidebar">
-					<h3>Weekly Summary</h3>
+                <% rows.forEach(function(row) { %>
 
-					<table>
-						<tr>
-							<th>Date</th><th>Published Viruses</th>
-						</tr>
-						<% include ../cache/virus_summary.txt%>
-					</table>
+                <tr>
+                    <td><a href="<%= row.url %>" target="_blank"><%= row.name %></a></td>
+                    <td><%= DDMM_Time(row.time) %></td>
+                    <td><a href="<%= row.url %>" target="_blank">View</a></td>
+                </tr>
 
-				</div>
+                <% }); %>
 
-				<% include ../partials/footer.ejs %>
-			</div>
+            </table>
 
-		</div>
+        </div>
+        <div id="sidebar">
+            <h3>Weekly Summary</h3>
 
-	</body>
+            <table>
+                <tr>
+                    <th>Date</th>
+                    <th>Published Viruses</th>
+                </tr>
+
+                <% summary.forEach(function(s) { %>
+
+                <tr>
+                    <td><a href="cyber?date=<%= formatLinkDate(s.date) %>"> <%= DDMMYY(s.date) %> </a></td>
+                    <td><%= s.count %> </td>
+                    <td><a href="cyber?date=<%= formatLinkDate(s.date) %>">View</a></td>
+                </tr>
+
+                <% }); %>
+
+
+            </table>
+
+        </div>
+
+        <% include ../partials/footer.ejs %>
+    </div>
+
+</div>
+
+</body>
 </html>

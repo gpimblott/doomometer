@@ -6,7 +6,7 @@
 
     <title>Doomometer - Earthquakes</title>
 
-   <% include ../partials/head.ejs%>
+    <% include ../partials/head.ejs %>
 
     <script>
         var map;
@@ -57,7 +57,6 @@
 <body onload="init();">
 
 
-
 <div id="wrap">
 
     <% include ../partials/header.ejs %>
@@ -66,14 +65,54 @@
     <div id="content-wrap">
         <div id="main">
             <h2>Earthquakes</h2>
+            <table>
+                <tr>
+                    <th>Description</th>
+                    <th>Depth</th>
+                    <th>Time</th>
+                    <th></th>
+                </tr>
 
-                <% include ../cache/earthquake_top30.txt %>
+                <% rows.forEach(function(row) { %>
+
+                <tr>
+                    <td><a href="<%= row.url %>" target="_blank"> <%= row.description %> </a></td>
+                    <td> <%= row.depth %> km</td>
+                    <td> <%= DDMM_Time(row.time) %> </td>
+                    <td><a href="<%= row.url %>" target="_blank">View</a></td>
+                </tr>
+
+                <% }); %>
+
+            </table>
+
+
 
         </div>
         <div id="sidebar">
             <h3>Weekly Summary</h3>
 
-               <% include ../cache/earthquake_summary.txt %>
+
+            <table>
+                <tr>
+                <tr>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th>Average Magnitude</th>
+                </tr>
+
+                <% summary.forEach(function(s) { %>
+
+                <tr>
+                    <td><a href="earthquakes?date=<%= formatLinkDate(s.date) %>"> <%= DDMMYY(s.date) %> </a></td>
+                    <td><%= s.count %> </td>
+                    <td><%= s.average.toFixed(2) %></td>
+                    <td><a href="earthquakes?date=<%= formatLinkDate(s.date) %>"> View</a></td>
+                </tr>
+
+                <% }); %>
+
+            </table>
 
             <h3>Locations</h3>
             <div id="basicMap"></div>

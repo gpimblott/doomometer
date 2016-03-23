@@ -2,68 +2,33 @@ var fs = require("fs");
 var dbpool = require('../config/dbpool');
 
 
+var Alerts = function () {
+};
 
-var Alerts = function () {};
 
-
-Alerts.refresh = function() {
+Alerts.refresh = function () {
     console.log("Alerts refresh");
-    Alerts.summary();
+    //Alerts.summary();
 }
 
 
-Alerts.summary = function() {
+Alerts.getAlerts = function (done) {
     /**
      * Create the list of virus for the front page
      */
     dbpool.getConnection(function (err, conn) {
 
         conn.query('SELECT * FROM alertstates  ', function (err, rows) {
-                if (!err) {
-
-                    var path = "views/cache/alerts.txt";
-                    var fileStream = fs.createWriteStream(path);
-
-                    rows.forEach( function (item, index) {
-
-
-                        var title = "<h3><a href=\"" + item.url + "\" target=\"_blank\">";
-                        title += item.source + " : ";
-                        title += item.title + " : ";
-                        title += item.state + "</a></h3>";
-
-                        fileStream.write( title + "\n");
-
-                        fileStream.write(  "<p class='post-info'> Issued " + item.issuetime +  "</p>");
-
-
-                        var table = "<table>";
-                        table += "<tr><th>Description</th><th></th></tr>";
-                        table += "<tr>";
-                        table += "<td>" + item.description + "</td>";
-                        table += "<td> <a href ";
-                        table += "\"" + item.url + "\" target=\"_blank\">";
-                        table += "<img src=\"" + item.imageurl + "\" alt=\"Threat state\" </a>";
-                        table += "</td></tr>";
-                        table += "</table>";
-
-
-                        fileStream.write( table + "\n");
-
-                    } );
-
-                    fileStream.end();
-
-                }
-                else {
+                if (err) {
                     console.log('Error while performing Query.');
+                } else {
+                    done(rows);
                 }
                 conn.release();
             }
         )
     });
 }
-
 
 
 module.exports = Alerts;

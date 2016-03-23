@@ -1,47 +1,96 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN">
 
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-		<title>Doomometer - Space Weather</title>
+    <title>Doomometer - Space Weather</title>
 
-		<% include ../partials/head.ejs %>
+    <% include ../partials/head.ejs %>
 
-	</head>
+</head>
 
-	<body>
-		<div id="wrap">
+<body>
+<div id="wrap">
 
-			<%include ../partials/header.ejs%>
+    <% include ../partials/header.ejs %>
 
-			<!-- content-wrap starts -->
-			<div id="content-wrap">
-				<div id="main">
-					<h2>Space Weather reports</h2>
-					<p>Space weather reports published in the last 24 hours.</p>
+    <!-- content-wrap starts -->
+    <div id="content-wrap">
+        <div id="main">
+            <h2>Space Weather reports</h2>
+            <p>Space weather reports published in the last 24 hours.</p>
 
-					<% include ../cache/spaceweather_data.txt %>
-				</div>
-				<div id="sidebar">
-					<h3>Weekly Summary</h3>
+            <% rows.forEach(function(row) { %>
+            <h3>
+                <font
+                        <% if ( row.message_type === "ALT") { %>
+                        color="Crimson">Alert :
+                    <% } else if ( row.message_type === "WAR" ) { %>
+                    color="SandyBrown"> Warning :
+                    <% } else if ( row.message_type === "SUM" ) { %>
+                    color="Yellow"> Summary :
+                    <% } else if ( row.message_type === "WAT" ) { %>
+                    color="Yellow"> Watch :
+                    <% } else  { %>
+                    color="Green"> Watch :
+                    <% } %>
 
-					<table>
-						<tr>
-							<th>Date</th><th>Published Space weather reports</th>
-						</tr>
+                    <%= row.name %></font>
 
-						<% include ../cache/spaceweather_summary.txt%>
-					</table>
+            </h3>
 
-				</div>
+            <p class='post-info'> Issued <%= row.issuetime %> </p>
 
-				<% include ../partials/footer.ejs%>
+            <table>
+                <% row.description.split("\r\n").forEach( function(line) {
+                    var parts = line.split(":");
 
-			</div>
+                if( undefined != parts[0] && undefined != parts[1]) {
+                %>
+                <tr>
+                    <td>
+                        <%= parts[0] %>
+                    </td>
+                    <td>
+                        <%= parts[1] %>
+                    </td>
+                </tr>
 
-		</div>
-	</body>
+                <% }; %>
+                <% }); %>
+            </table>
+            <% }); %>
+
+        </div>
+        <div id="sidebar">
+            <h3>Weekly Summary</h3>
+
+            <table>
+                <tr>
+                    <th>Date</th>
+                    <th>Published Space weather reports</th>
+                </tr>
+
+                <% summary.forEach(function(s) { %>
+
+                <tr>
+                    <td><a href="spaceweather?date=<%= formatLinkDate(s.date) %>"> <%= DDMMYY(s.date) %> </a></td>
+                    <td><%= s.count %> </td>
+                    <td><a href="spaceweather?date=<%= formatLinkDate(s.date) %>">View</a></td>
+                </tr>
+
+                <% }); %>
+
+            </table>
+
+        </div>
+
+        <% include ../partials/footer.ejs %>
+
+    </div>
+
+</div>
+</body>
 </html>
 

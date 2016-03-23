@@ -3,17 +3,18 @@ var dbpool = require('../config/dbpool');
 var dateutil = require('../utils/DateTime.js');
 
 
-var Disasters = function () {};
+var Disasters = function () {
+};
 
 
-Disasters.refresh = function() {
+Disasters.refresh = function () {
     console.log("Disasters refresh");
-    Disasters.openmapPoints();
-    Disasters.summary();
-    Disasters.todayTable();
+    Disasters.getOpenmapPoints();
+    //Disasters.summary();
+    //Disasters.todayTable();
 }
 
-Disasters.openmapPoints = function() {
+Disasters.getOpenmapPoints = function () {
     /**
      * Create the list of earthquakes for the front page
      */
@@ -25,7 +26,7 @@ Disasters.openmapPoints = function() {
                     var path = "views/cache/disaster_data.txt";
                     var fileStream = fs.createWriteStream(path);
 
-                    rows.forEach( function (item, index) {
+                    rows.forEach(function (item, index) {
 
                         var row = "features[" + index + "] = poi(";
                         row += item.id + ",";
@@ -33,12 +34,12 @@ Disasters.openmapPoints = function() {
                         row += "\"" + item.url + "\",";
                         row += "\"" + item.name + "\",";
                         row += item.latitude + ",";
-                        row += item.longitude ;
+                        row += item.longitude;
                         row += ");"
 
-                        fileStream.write( row + "\n");
+                        fileStream.write(row + "\n");
 
-                    } );
+                    });
 
                     fileStream.end();
 
@@ -53,39 +54,38 @@ Disasters.openmapPoints = function() {
 
 }
 
-Disasters.todayTable = function() {
+Disasters.getForDate = function (d, done) {
+    /**
+     * Create the list of virus' for the front page
+     */
+    dbpool.getConnection(function (err, conn) {
+
+        conn.query("SELECT url,name,description,fromdate,todate,id,alert_level from disasters where date(time)='" +
+            d + "' order by fromdate desc limit 20", function (err, rows) {
+
+                if (err) {
+                    console.log('Error while performing Query.');
+                } else {
+                    done(rows);
+                }
+                conn.release();
+            }
+        )
+    });
+}
+
+Disasters.getForToday = function (done) {
     /**
      * Create the list of virus' for the front page
      */
     dbpool.getConnection(function (err, conn) {
 
         conn.query('SELECT url,name,description,fromdate,todate,id,alert_level from disasters_today_view', function (err, rows) {
-                if (!err) {
 
-                    var path = "views/cache/disaster_top30.txt";
-                    var fileStream = fs.createWriteStream(path);
-
-                    fileStream.write("<!-- " + new Date().toISOString() + "-->\n")
-
-
-                    rows.forEach( function (item, index) {
-
-                        var row = "<h3><a href=\"" + item.url + "\" target=\"_blank\">" + item.name + "</a></h3>";
-                        row += "<p class='post-info'>From " + dateutil.DDMMYY_Time(item.fromdate) +
-                            " to " + dateutil.DDMMYY_Time(item.todate) + "</p>";
-                        row += "<p>" + item.description + "</p>";
-
-
-                        fileStream.write( row + "\n");
-
-                    } );
-
-                    fileStream.write("<p><i> Generated " + new Date().toISOString() + " </i></p>");
-                    fileStream.end();
-
-                }
-                else {
+                if (err) {
                     console.log('Error while performing Query.');
+                } else {
+                    done(rows);
                 }
                 conn.release();
             }
@@ -93,43 +93,24 @@ Disasters.todayTable = function() {
     });
 }
 
-Disasters.summary = function() {
+Disasters.getSummary = function (done) {
     /**
      * Create the list of virus for the front page
      */
     dbpool.getConnection(function (err, conn) {
 
         conn.query('SELECT * FROM disasters_summary_view ORDER BY date DESC limit 7', function (err, rows) {
-                if (!err) {
 
-                    var path = "views/cache/disaster_summary.txt";
-                    var fileStream = fs.createWriteStream(path);
-
-                    rows.forEach( function (item, index) {
-
-
-                        var row = "<tr>";
-                        row += "<td><a href=\"disasters?date=" + dateutil.formatLinkDate(item.date) + "\">" + dateutil.DDMMYY(item.date) + "</a></td>";
-                        row += "<td>" + item.count + "</td>";
-                        row += "<td><a href=\"disasters?date=" + dateutil.formatLinkDate(item.date) + "\">View</a></td>";
-                        row += "</tr>";
-
-                        fileStream.write( row + "\n");
-
-                    } );
-
-                    fileStream.end();
-
-                }
-                else {
+                if (err) {
                     console.log('Error while performing Query.');
+                } else {
+                    done(rows);
                 }
                 conn.release();
             }
         )
     });
 }
-
 
 
 module.exports = Disasters;
