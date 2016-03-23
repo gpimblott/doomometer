@@ -1,35 +1,51 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN">
 
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-		<title>Doomometer - Alert states</title>
+    <title>Doomometer - Alert states</title>
 
-		<% include ../partials/head.ejs%>
+    <% include ../partials/head.ejs %>
 
-	</head>
+</head>
 
-	<body>
-		<div id="wrap">
+<body>
+<div id="wrap">
 
-			<% include ../partials/header.ejs%>
+    <% include ../partials/header.ejs %>
 
-			<!-- content-wrap starts -->
-			<div id="content-wrap">
-				<div >
-					<h2>Alert states</h2>
-					
-						<% include ../cache/alerts.txt %>
-				</div>
-				
-			
-				<% include ../partials/footer.ejs%>
-			
-			</div>
+    <!-- content-wrap starts -->
+    <div id="content-wrap">
+        <div>
+            <h2>Alert states</h2>
 
-		</div>
-	</body>
+            <% rows.forEach(function(row) { %>
+
+            <h3><a href="<%= row.url %>" target="_blank"> <%= row.source %> : <%= row.title %> : <%= row.state %> </a></h3>
+
+            <p class='post-info'> Issued <%= row.issuetime %> </p>
+            <table>
+                <tr>
+                    <th>Description</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td><%= row.description %></td>
+                    <td><a href="<%= row.url %>" target="_blank"> <img src="<%= row.imageurl %>" alt="Threat state"/>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+
+            <% }); %>
+
+        </div>
+
+        <% include ../partials/footer.ejs %>
+
+    </div>
+
+</div>
+</body>
 </html>

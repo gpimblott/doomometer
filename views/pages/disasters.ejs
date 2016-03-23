@@ -1,94 +1,114 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN">
 
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-		<title>Doomometer - Disasters</title>
+    <title>Doomometer - Disasters</title>
 
-		<% include ../partials/head.ejs %>
-	
-	</head>
+    <% include ../partials/head.ejs %>
 
-	<body onload="init();">
-		
-		<script>
-			var map;
-			var disastersLayer;
+</head>
 
-			function init() {
-				map = new OpenLayers.Map("basicMap");
-				map.addLayer(new OpenLayers.Layer.OSM());
+<body onload="init();">
 
-				map.addControl(new OpenLayers.Control.LayerSwitcher());
+<script>
+    var map;
+    var disastersLayer;
 
-				var styleMap = new OpenLayers.StyleMap({pointRadius: 5 });
-				var lookup = {
-						"Green": {pointRadius: 5,fillColor: "green", fillOpacity: 0.5, strokeColor: "black"},
-						"Red": {pointRadius: 5,fillColor: "red", fillOpacity: 0.5, strokeColor: "black"},
-				}
+    function init() {
+        map = new OpenLayers.Map("basicMap");
+        map.addLayer(new OpenLayers.Layer.OSM());
 
-				styleMap.addUniqueValueRules("default", "size", lookup);
+        map.addControl(new OpenLayers.Control.LayerSwitcher());
 
-				disastersLayer = new OpenLayers.Layer.Vector('Disasters', {styleMap: styleMap});
+        var styleMap = new OpenLayers.StyleMap({pointRadius: 5});
+        var lookup = {
+            "Green": {pointRadius: 5, fillColor: "green", fillOpacity: 0.5, strokeColor: "black"},
+            "Red": {pointRadius: 5, fillColor: "red", fillOpacity: 0.5, strokeColor: "black"},
+        }
 
-				
+        styleMap.addUniqueValueRules("default", "size", lookup);
 
-			var features = new Array(0);
-
-			<% include ../cache/disaster_data.txt %>
-	
-			disastersLayer.addFeatures(features);
-
-			map.addLayer(disastersLayer);
-			
-			select = new OpenLayers.Control.SelectFeature( disastersLayer );
-			
-			disastersLayer.events.on( { 
-				"featureselected": onFeatureSelect,
-				"featureunselected": onFeatureUnselect 
-				});
-
-			map.addControl(select);
-			select.activate();
-
-			map.zoomToMaxExtent();
-		}
+        disastersLayer = new OpenLayers.Layer.Vector('Disasters', {styleMap: styleMap});
 
 
-	</script>
-		
-		
-		<div id="wrap">
+        var features = new Array(0);
 
-			<% include ../partials/header.ejs %>
+        <% include ../cache/disaster_data.txt %>
+
+        disastersLayer.addFeatures(features);
+
+        map.addLayer(disastersLayer);
+
+        select = new OpenLayers.Control.SelectFeature(disastersLayer);
+
+        disastersLayer.events.on({
+            "featureselected": onFeatureSelect,
+            "featureunselected": onFeatureUnselect
+        });
+
+        map.addControl(select);
+        select.activate();
+
+        map.zoomToMaxExtent();
+    }
 
 
-			<!-- content-wrap starts -->
-			<div id="content-wrap">
-				<div id="main">
-					<h2>Disasters</h2>
-                    <p> Disasters published in the last 24 hours</p>
-					
-					<% include ../cache/disaster_top30.txt %>
-				
-				</div>
-				<div id="sidebar">
-					<h3>Weekly Summary</h3>
-					
-					<table>
-						<tr><th>Date</th><th>Published Disasters</th></tr>
-						
-						<%include ../cache/disaster_summary.txt %>
-					</table>
-					<h3>Locations</h3>
-					<div id="basicMap"></div>
-				</div>
-			
-				<% include ../partials/footer.ejs %>
-			
-			</div>
+</script>
 
-		</div>
-	</body>
+
+<div id="wrap">
+
+    <% include ../partials/header.ejs %>
+
+    <!-- content-wrap starts -->
+    <div id="content-wrap">
+        <div id="main">
+            <h2>Disasters</h2>
+            <p> Disasters published in the last 24 hours</p>
+
+            <% rows.forEach(function(row) { %>
+
+            <h3><a href="<%= row.url %>" target="_blank"><%= row.name %></a></h3>
+            <p class='post-info'>From <%= DDMMYY_Time(row.fromdate) %> to <%= DDMMYY_Time(row.todate) %></p>
+            <p><%= row.description %></p>
+
+            <% }); %>
+
+        </div>
+        <div id="sidebar">
+            <h3>Weekly Summary</h3>
+
+
+            <table>
+                <tr>
+                <tr>
+                    <th>Date</th>
+                    <th>Total</th>
+                </tr>
+
+                <% summary.forEach(function(s) { %>
+
+                <tr>
+                    <td><a href="disasters?date=<%= formatLinkDate(s.date) %>"> <%= DDMMYY(s.date) %> </a></td>
+                    <td><%= s.count %> </td>
+                    <td><a href="disasters?date=<%= formatLinkDate(s.date) %>">View</a></td>
+                </tr>
+
+                <% }); %>
+
+            </table>
+
+
+            <h3>Locations</h3>
+            <div id="basicMap"></div>
+        </div>
+
+        <% include ../partials/footer.ejs %>
+
+    </div>
+
+</div>
+</body>
 </html>
