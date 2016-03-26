@@ -65,6 +65,11 @@
     <div id="content-wrap">
         <div id="main">
             <h2>Earthquakes</h2>
+            <%  if (locals.searchdate!= undefined ) { %>
+            <p class='post-info'>Earthquakes on <%=searchdate %></p>
+            <% } else { %>
+            <p class='post-info'>Earthquakes in the last 24 hrs</p>
+            <% } %>
             <table>
                 <tr>
                     <th>Description</th>

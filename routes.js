@@ -108,10 +108,10 @@ Routes.create = function (app) {
 
         if (date != undefined) {
             earthquakes.getForDate(date, function (rows) {
-                res.render('pages/earthquakes.ejs', {rows: rows, summary: earthquakesSummary});
+                res.render('pages/earthquakes.ejs', {rows: rows, summary: earthquakesSummary , searchdate: date});
             });
         } else {
-            res.render('pages/earthquakes.ejs', {rows: earthquakesToday, summary: earthquakesSummary});
+            res.render('pages/earthquakes.ejs', {rows: earthquakesToday, summary: earthquakesSummary });
         }
     });
 
@@ -124,7 +124,7 @@ Routes.create = function (app) {
 
         if (date != undefined) {
             disasters.getForDate(date, function (rows) {
-                res.render('pages/disasters.ejs', {rows: rows, summary: disastersSummary});
+                res.render('pages/disasters.ejs', {rows: rows, summary: disastersSummary,searchdate:date});
             });
         } else {
             res.render('pages/disasters.ejs', {rows: disastersToday, summary: disastersSummary});
@@ -148,7 +148,7 @@ Routes.create = function (app) {
 
         if (date != undefined) {
             virus.getForDate(date, function (rows) {
-                res.render('pages/cyber.ejs', {rows: rows, summary: virusSummary});
+                res.render('pages/cyber.ejs', {rows: rows, summary: virusSummary,searchdate:date});
             });
         } else {
             res.render('pages/cyber.ejs', {rows: virusToday, summary: virusSummary});
@@ -161,13 +161,16 @@ Routes.create = function (app) {
 
         if (date != undefined) {
             spaceWeather.getForDate(date, function (rows) {
-                res.render('pages/spaceweather.ejs', {rows: rows, summary: spaceWeatherSummary});
+                res.render('pages/spaceweather.ejs', {rows: rows, summary: spaceWeatherSummary, searchdate:date});
             });
         } else {
             res.render('pages/spaceweather.ejs', {rows: spaceWeatherToday, summary: spaceWeatherSummary});
         }
     });
 
+    app.get('/dash', function (req, res) {
+        res.render('pages/dashboard.ejs');
+    })
 
     /**
      * Ping/pong to keep service awake

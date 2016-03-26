@@ -19,8 +19,11 @@
     <div id="content-wrap">
         <div id="main">
             <h2>Space Weather reports</h2>
-            <p>Space weather reports published in the last 24 hours.</p>
-
+            <%  if (locals.searchdate!= undefined ) { %>
+            <p class='post-info'>Space weather reports on <%=searchdate %></p>
+            <% } else { %>
+            <p class='post-info'>Space weather reports in the last 24 hrs</p>
+            <% } %>
             <% rows.forEach(function(row) { %>
             <h3>
                 <font

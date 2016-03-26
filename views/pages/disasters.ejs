@@ -66,7 +66,11 @@
     <div id="content-wrap">
         <div id="main">
             <h2>Disasters</h2>
-            <p> Disasters published in the last 24 hours</p>
+            <%  if (locals.searchdate!= undefined ) { %>
+            <p class='post-info'>Disasters on <%=searchdate %></p>
+            <% } else { %>
+            <p class='post-info'>Disasters in the last 24 hrs</p>
+            <% } %>
 
             <% rows.forEach(function(row) { %>
 
