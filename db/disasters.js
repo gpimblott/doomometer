@@ -23,7 +23,7 @@ Disasters.getOpenmapPoints = function () {
         conn.query('SELECT * from disasters_today_view', function (err, rows) {
                 if (!err) {
 
-                    var path = "views/cache/disaster_data.txt";
+                    var path = "views/disaster_data.txt";
                     var fileStream = fs.createWriteStream(path);
 
                     rows.forEach(function (item, index) {

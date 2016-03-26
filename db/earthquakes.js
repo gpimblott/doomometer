@@ -15,7 +15,7 @@ Earthquakes.getOpenmapPoints = function() {
         conn.query('SELECT * from earthquakes_today_view', function (err, rows) {
                 if (!err) {
 
-                    var path = "views/cache/earthquake_data.txt";
+                    var path = "views/earthquake_data.txt";
                     var fileStream = fs.createWriteStream(path);
 
                     fileStream.write("// Created : " + new Date().toISOString() + "\n")
