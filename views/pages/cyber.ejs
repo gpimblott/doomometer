@@ -17,8 +17,13 @@
     <!-- content-wrap starts -->
     <div id="content-wrap">
         <div id="main">
-            <h2>Viruses detected today</h2>
+            <h2>Viruses reports</h2>
 
+            <%  if (locals.searchdate!= undefined ) { %>
+            <p class='post-info'>Viruses detected on <%=searchdate %></p>
+            <% } else { %>
+            <p class='post-info'>Viruses detected in the last 24 hrs</p>
+            <% } %>
 
             <table width='400'>
                 <tr>

@@ -1,16 +1,23 @@
+.axis path, .axis line
+{
+	fill: none;
+	stroke: #777;
+	shape-rendering: crispEdges;
+}
 
-#title-text a {
-	position: absolute;
-	margin: 0; padding: 0;
-	font: bold 65px 'Trebuchet MS', Tahoma, Helvetica, Arial, Sans-serif;
-	letter-spacing: -1.5px;
-	color: #F8F8F8;
-	text-decoration: none;
-	text-transform: none;
-		
-	/* change the values of top and left to adjust the position of the logo*/
-	top: 75px; left: 25px;	
+.axis text
+{
+	font-family: 'Arial';
+	font-size: 13px;
+	stroke: #777;
+	fill: #888;
 }
-#header h1#title-text a:hover {
-	background: none;	border: none;
+.tick
+{
+	stroke-dasharray: 1, 2;
 }
+.bar
+{
+	fill: #777;
+}
+
