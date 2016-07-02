@@ -2,7 +2,7 @@ var https = require('https');
 
 var host = 'api.uclassify.com'
 var endpoint = '/v1/uClassify/Sentiment/classify';
-var apiKey = 'Token dCcqN2x5dECq';
+var apiKey = 'Token ' + process.env.UCLASSIFY_TOKEN;
 var method = 'POST';
 
 
