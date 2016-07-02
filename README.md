@@ -1,3 +1,5 @@
-The OpenShift `nodejs` cartridge documentation can be found at:
+Source code for the 'Doom-o-meter'
 
-http://openshift.github.io/documentation/oo_cartridge_guide.html#nodejs
+http://www.doomometer.com
+
+
