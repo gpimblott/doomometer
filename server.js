@@ -1,5 +1,8 @@
 #!/bin/env node
 //  Doomometer
+// Load in the environment variables
+require('dotenv').config({path: 'process.env'});
+
 require('console-stamp')(console, '[ddd mmm dd HH:MM:ss]]');
 
 var express = require('express');
@@ -105,9 +108,7 @@ var DoomApp = function () {
         self.app.use(bodyParser.urlencoded({
             extended: true
         }));
-
-        self.app.use(session({secret: 'mysecretkeyforthiscookie'}));
-
+        
 
         // This is for the uClassify feed
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -118,6 +119,17 @@ var DoomApp = function () {
         // Browser Cache
         var oneDay = 86400000;
         self.app.use('/', express.static('public', {maxAge: oneDay}));
+
+        // Setup the secret cookie key
+        var cookie_key = process.env.COOKIE_KEY || 'aninsecurecookiekey';
+        self.app.use(session({secret: cookie_key }));
+
+        // Setup the Google Analytics ID if defined
+        self.app.locals.google_id = process.env.GOOGLE_ID || undefined;
+
+
+        console.log("GA ID:" + self.app.locals.google_id);
+        console.log("Cookie key:" + cookie_key);
 
         // Setup functions to call from template
         self.app.locals.DDMM_Time = dateUtils.DDMM_Time;
