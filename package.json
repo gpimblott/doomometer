@@ -36,7 +36,7 @@
     "node-schedule" : "latest",
     "feedparser" : "latest",
     "request" : "latest",
-    "https" : "latest",
+    "https" : "latest"
   },
   "devDependencies": {},
   "bundleDependencies": [],
