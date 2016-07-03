@@ -26,9 +26,9 @@ Schedule.start = function () {
         feeds.refresh();
     });
 
-    //var bbcJob = schedule.scheduleJob('0 */3 * * *', function(){
-    //    bbc.refresh();
-    //});
+    var bbcJob = schedule.scheduleJob('0 */3 * * *', function(){
+       bbc.refresh();
+    });
 }
 
 module.exports = Schedule;

@@ -1,7 +1,7 @@
 var https = require('https');
 
 var host = 'api.uclassify.com'
-var endpoint = '/v1/uClassify/Sentiment/classify';
+var endpoint = '/v1/gpimblott/bbcnews/classify';
 var apiKey = 'Token ' + process.env.UCLASSIFY_TOKEN;
 var method = 'POST';
 

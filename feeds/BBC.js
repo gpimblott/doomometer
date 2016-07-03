@@ -1,3 +1,5 @@
+require('dotenv').config({path: '../process.env'});
+
 var mysql = require('mysql');
 var config = require('../config/db');
 var uclassify = require('../utils/uclassify.js');
@@ -17,6 +19,7 @@ BBC.refresh = function () {
     var feedparser = new FeedParser();
     var count = 0;
     var data = "{\"texts\":[";
+    var text = "";
 
     req.on('error', function (error) {
         console.log(error);
@@ -31,6 +34,7 @@ BBC.refresh = function () {
     });
 
     feedparser.on('end', function (error) {
+        data = data + JSON.stringify(text);
         data = data + "]}";
 
         uclassify.performRequest(data, BBC.updateDatabase);
@@ -47,13 +51,7 @@ BBC.refresh = function () {
             , item;
 
         while (item = stream.read()) {
-            // console.log(item);
-
-            if (count != 0 ) {
-                data = data + ",";
-            }
-
-            data = data + JSON.stringify(item.description );
+            text = text + item.description;
             count = count + 1;
         }
 
@@ -65,10 +63,7 @@ BBC.refresh = function () {
 BBC.updateDatabase = function (response) {
 
     var numReports= response.length;
-    var negative = 0.0;
-    var positive = 0.0;
-    var numnegative = 0;
-    var numpositive = 0;
+
 
     if( numReports === undefined ){
         console.log("Failed to get response from uClassify")
@@ -76,38 +71,23 @@ BBC.updateDatabase = function (response) {
         return;
     }
 
+    var post = {
+        channel: "BBC", report_date: new Date().toISOString()
+    };
+
     for (var i = 0; i < response.length; i++) {
 
         var resp = response[i];
-        var neg = 0;
-        var pos = 0;
 
-
-        for (var ci = 0; ci < 2; ci++) {
+        for (var ci = 0; ci < resp.classification.length; ci++) {
             var className = resp.classification[ci].className;
-            var p = resp.classification[ci].p;
+            var p = (resp.classification[ci].p*100).toFixed(1);
 
-            if (className === "negative") {
-                neg = p;
-            } else {
-                pos = p;
-            }
+            post[className] = p;
+            //console.log( className + ":" + p );
         }
-
-        if (neg > pos) {
-            numnegative = numnegative + 1;
-        } else {
-            numpositive = numpositive + 1;
-        }
-
-        negative = negative + neg;
-        positive = positive + pos;
 
     }
-
-    negative = (negative/numReports * 100).toFixed(1);
-    positive = (positive/numReports * 100).toFixed(1);
-
 
     var connection = mysql.createConnection({
         host: config.mysql.host,
@@ -124,11 +104,7 @@ BBC.updateDatabase = function (response) {
             return;
         }
 
-        var post = {
-            channel: "BBC", reports: numReports, sampletime: new Date().toISOString(),
-            negative: negative, positive: positive,
-            numnegative: numnegative, numpositive: numpositive
-        };
+
 
 
         query = connection.query('INSERT IGNORE INTO news SET ?', post, function (err, result) {
@@ -148,4 +124,4 @@ BBC.updateDatabase = function (response) {
 
 module.exports = BBC;
 
-//BBC.refresh();
+BBC.refresh();
