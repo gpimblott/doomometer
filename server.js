@@ -1,7 +1,7 @@
 #!/bin/env node
 //  Doomometer
 // Load in the environment variables
-require('dotenv').config({path: 'process.env'});
+require('dotenv').config({path: './process.env'});
 
 require('console-stamp')(console, '[ddd mmm dd HH:MM:ss]]');
 
@@ -37,16 +37,9 @@ var DoomApp = function () {
      */
     self.setupVariables = function () {
         //  Set the environment variables we need.
-        self.ipaddress = process.env.OPENSHIFT_NODEJS_IP;
-        self.port = process.env.OPENSHIFT_NODEJS_PORT || 8090;
-
-        if (typeof self.ipaddress === "undefined") {
-            //  Log errors on OpenShift but continue w/ 127.0.0.1 - this
-            //  allows us to run/test the app locally.
-            console.warn('No OPENSHIFT_NODEJS_IP var, using 127.0.0.1');
-            self.ipaddress = "127.0.0.1";
-        }
-        ;
+        self.ipaddress = process.env.IP || '0.0.0.0';
+        self.port = process.env.PORT || 8080;
+        
     };
 
 
@@ -108,7 +101,7 @@ var DoomApp = function () {
         self.app.use(bodyParser.urlencoded({
             extended: true
         }));
-        
+
 
         // This is for the uClassify feed
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
